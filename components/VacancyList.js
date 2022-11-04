@@ -2,15 +2,6 @@ import React, { useState } from "react";
 import Link from "next/link";
 import { Col, Input, Label, Row, Modal, ModalBody } from "reactstrap";
 
-//Images Import
-import jobImage1 from "../public/featured-job/img-01.png";
-import jobImage2 from "../public/featured-job/img-02.png";
-import jobImage3 from "../public/featured-job/img-03.png";
-import jobImage4 from "../public/featured-job/img-04.png";
-import jobImage5 from "../public/featured-job/img-05.png";
-import jobImage6 from "../public/featured-job/img-06.png";
-import jobImage7 from "../public/featured-job/img-07.png";
-
 const JobVacancyList = ({ data }) => {
   //Apply Now Model
   const [modal, setModal] = useState(false);
@@ -31,7 +22,7 @@ const JobVacancyList = ({ data }) => {
                 <Col md={2}>
                   <div className="text-center mb-4 mb-md-0">
                     <Link href="/companydetails">
-                      {"Company Name: " + company["Full name"]}
+                      {"Company Name: " + company["full_name"]}
                     </Link>
                   </div>
                 </Col>
@@ -40,11 +31,11 @@ const JobVacancyList = ({ data }) => {
                   <div className="mb-2 mb-md-0">
                     <h5 className="fs-18 mb-0">
                       <Link href="/jobdetails" className="text-dark">
-                        {"Country: " + company["Location"]}
+                        {"Country: " + company["location"]}
                       </Link>
                     </h5>
                     <p className="text-muted fs-14 mb-0">
-                      {"Locality: " + company["Locality"]}
+                      {"Locality: " + company["locality"]}
                     </p>
                   </div>
                 </Col>
@@ -55,7 +46,7 @@ const JobVacancyList = ({ data }) => {
                       <i className="mdi mdi-map-marker text-primary me-1"></i>
                     </div>
                     <p className="text-muted mb-0">
-                      {"City: " + company["Metro"]}
+                      {"City: " + company["metro"]}
                     </p>
                   </div>
                 </Col>
@@ -66,7 +57,7 @@ const JobVacancyList = ({ data }) => {
                       <i className="uil uil-clock-three text-primary me-1"></i>
                     </div>
                     <p className="text-muted mb-0">
-                      {"Town: " + company["Region"]}
+                      {"Town: " + company["region"]}
                     </p>
                   </div>
                 </Col>
@@ -79,9 +70,9 @@ const JobVacancyList = ({ data }) => {
                     <p className="text-muted mb-0">
                       <span className="text-dark"> :</span>
                       {"Industry: " +
-                        company["Industry"] +
-                        ", Industry 2: " +
-                        company["Industry 2"]}
+                        company["industry"] +
+                        ", industry_two: " +
+                        company["Industry_two"]}
                     </p>
                   </div>
                 </Col>

@@ -1,8 +1,9 @@
 import React from "react";
 import Link from "next/link";
 import { Col, Row } from "reactstrap";
+import "react-pagination-bar/dist/index.css";
 
-const Pagination = () => {
+const Pagination = ({ data }) => {
   return (
     <>
       <Row>

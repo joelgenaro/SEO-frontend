@@ -107,9 +107,7 @@
   margin-left: 0.5rem;
 }
 
-.companyList{
-  margin-right: 100px !important;
-}
+
 
 @media (max-width: 600px) {
   .grid {

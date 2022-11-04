@@ -1,11 +1,81 @@
-import React from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Col, Form } from "react-bootstrap";
 import { Input, Row } from "reactstrap";
+import axios from "axios";
+import $ from "jquery";
 
-const JobSearchOptions = () => {
-  const searchBottom = {
-    marginBottom: "50px",
+const JobSearchOptions = ({ setData, countries, sectorOne, sectorTwo }) => {
+  const [cities, setCities] = useState(null);
+  const [town, setTown] = useState(null);
+  const [localities, setLocalities] = useState(null);
+
+  const getDatawithCurrentOption = async () => {
+    let formData = $("#filterForm").serializeArray();
+
+    axios.defaults.withCredentials = true;
+    axios
+      .post(`http://localhost:8000/api/getData/`, {
+        formData,
+      })
+      .then((res) => {
+        setData(res.data.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
+
+  // get childrens when changing parent option
+  function handleChange(type, value) {
+    if (value == "") {
+      switch (type) {
+        case "country":
+          setCities(null);
+          setTown(null);
+          setLocalities(null);
+          break;
+
+        case "city":
+          setTown(null);
+          setLocalities(null);
+          break;
+
+        case "town":
+          setLocalities(null);
+          break;
+
+        default:
+          break;
+      }
+    } else {
+      axios.defaults.withCredentials = true;
+      axios
+        .get(`http://localhost:8000/api/getSearchOptions/${type}/${value}`)
+        .then((res) => {
+          switch (type) {
+            case "country":
+              setCities(res.data);
+              break;
+
+            case "city":
+              setTown(res.data);
+              break;
+
+            case "town":
+              setLocalities(res.data);
+              break;
+
+            default:
+              break;
+          }
+          // get date with current options
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+    // getDatawithCurrentOption();
+  }
   return (
     <>
       <div className="job-list-header">
@@ -40,92 +110,180 @@ const JobSearchOptions = () => {
             </Col>
           </Row>
         </Form> */}
-        <Form action="#">
+        <form action="#" id="filterForm">
           <Row className="g-2">
             <Col lg={3} md={6}>
               <div className="filler-job-form">
+                <label htmlFor="country" className="form-label">
+                  Country
+                </label>
                 <select
                   className="form-select form-select-option"
                   data-trigger
-                  name="choices-single-categories"
-                  id="choices-single-categories"
+                  name="location"
+                  id="country"
                   aria-label="Default select example"
-                ></select>
+                  onChange={(e) => handleChange("country", e.target.value)}
+                >
+                  <option value="">...</option>
+                  {countries.map((country, key) => (
+                    <option key={key} value={country.location}>
+                      {country.location}
+                    </option>
+                  ))}
+                </select>
               </div>
             </Col>
             <Col lg={3} md={6}>
               <div className="filler-job-form">
+                <label htmlFor="city" className="form-label">
+                  City
+                </label>
                 <select
                   className="form-select form-select-option"
                   data-trigger
-                  name="choices-single-categories"
-                  id="choices-single-categories"
+                  name="metro"
+                  id="city"
                   aria-label="Default select example"
-                ></select>
+                  onChange={(e) => handleChange("city", e.target.value)}
+                >
+                  <option value="">...</option>
+
+                  {cities
+                    ? cities.map((city, key) => (
+                        <option key={key} value={city.metro}>
+                          {city.metro}
+                        </option>
+                      ))
+                    : ""}
+                </select>
               </div>
             </Col>
             <Col lg={3} md={6}>
               <div className="filler-job-form">
+                <label htmlFor="town" className="form-label">
+                  Town
+                </label>
                 <select
                   className="form-select form-select-option"
                   data-trigger
-                  name="choices-single-categories"
-                  id="choices-single-categories"
+                  name="region"
+                  id="town"
                   aria-label="Default select example"
-                ></select>
+                  onChange={(e) => handleChange("town", e.target.value)}
+                >
+                  <option value="">...</option>
+                  {town
+                    ? town.map((town, key) => (
+                        <option key={key} value={town.region}>
+                          {town.region}
+                        </option>
+                      ))
+                    : ""}
+                </select>
               </div>
             </Col>
             <Col lg={3} md={6}>
               <div className="filler-job-form">
+                <label htmlFor="locality" className="form-label">
+                  Locality
+                </label>
                 <select
                   className="form-select form-select-option"
                   data-trigger
-                  name="choices-single-categories"
-                  id="choices-single-categories"
+                  name="locality"
+                  id="locality"
                   aria-label="Default select example"
-                ></select>
+                  // onChange={() => getDatawithCurrentOption()}
+                >
+                  <option value="">...</option>
+
+                  {localities
+                    ? localities.map((locality, key) => (
+                        <option key={key} value={locality.locality}>
+                          {locality.locality}
+                        </option>
+                      ))
+                    : ""}
+                </select>
+              </div>
+            </Col>
+          </Row>
+
+          <Row className="g-2">
+            <Col lg={3} md={6}>
+              <div className="filler-job-form">
+                <label htmlFor="sectorOne" className="form-label">
+                  Sector 1
+                </label>
+                <select
+                  className="form-select form-select-option"
+                  data-trigger
+                  name="industry"
+                  id="sectorOne"
+                  aria-label="Default select example"
+                  // onChange={() => getDatawithCurrentOption()}
+                >
+                  <option value="">...</option>
+                  {sectorOne.map((sector, key) => (
+                    <option key={key} value={sector.industry}>
+                      {sector.industry}
+                    </option>
+                  ))}
+                </select>
               </div>
             </Col>
             <Col lg={3} md={6}>
               <div className="filler-job-form">
+                <label htmlFor="sectorTwo" className="form-label">
+                  Sector 2
+                </label>
                 <select
                   className="form-select form-select-option"
                   data-trigger
-                  name="choices-single-categories"
-                  id="choices-single-categories"
+                  name="industry_two"
+                  id="sectorTwo"
                   aria-label="Default select example"
-                ></select>
+                  // onChange={() => getDatawithCurrentOption()}
+                >
+                  <option value="">...</option>
+                  {sectorTwo.map((sector, key) => (
+                    <option key={key} value={sector.industry_two}>
+                      {sector.industry_two}
+                    </option>
+                  ))}
+                </select>
               </div>
             </Col>
             <Col lg={3} md={6}>
               <div className="filler-job-form">
+                <label htmlFor="sectorThree" className="form-label">
+                  Sector 3
+                </label>
                 <select
                   className="form-select form-select-option"
                   data-trigger
-                  name="choices-single-location"
-                  id="choices-single-location"
+                  name="sectorThree"
+                  id="sectorThree"
                   aria-label="Default select example"
-                ></select>
+                  // onChange={() => getDatawithCurrentOption()}
+                >
+                  <option value="">...</option>
+                </select>
               </div>
             </Col>
             <Col lg={3} md={6}>
-              <div className="filler-job-form">
-                <select
-                  className="form-select form-select-option"
-                  data-trigger
-                  name="choices-single-categories"
-                  id="choices-single-categories"
-                  aria-label="Default select example"
-                ></select>
-              </div>
-            </Col>
-            <Col lg={3} md={6}>
-              <div to="#" className="btn btn-primary w-100">
+              <label className="form-label">{"."} </label>
+              <div
+                onClick={() => getDatawithCurrentOption()}
+                to="#"
+                className="btn btn-primary w-100"
+              >
                 <i className="uil uil-filter"></i> Fliter
               </div>
             </Col>
           </Row>
-        </Form>
+        </form>
       </div>
     </>
   );
