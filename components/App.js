@@ -18,7 +18,7 @@ const App = ({}) => {
       .then((res) => res.json())
       .then((res) => {
         console.log("initial", res.data);
-        setData(res.data.data);
+        setData(res.data);
         setCountries(res.countries);
         setSectorOne(res.sectorOne);
         setSectorTwo(res.sectorTwo);

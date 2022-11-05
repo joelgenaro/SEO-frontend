@@ -18,7 +18,7 @@ const JobSearchOptions = ({ setData, countries, sectorOne, sectorTwo }) => {
         formData,
       })
       .then((res) => {
-        setData(res.data.data);
+        setData(res.data);
       })
       .catch((err) => {
         console.log(err);
