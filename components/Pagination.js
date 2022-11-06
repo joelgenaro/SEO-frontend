@@ -1,51 +1,68 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Link from "next/link";
 import { Col, Row } from "reactstrap";
-import "react-pagination-bar/dist/index.css";
+import Pagination from "react-js-pagination";
+import axios from "axios";
+import { useDispatch, useSelector } from "react-redux";
 
-const Pagination = ({ data }) => {
+const PaginationWithProgrees = () => {
+  //Use for all the dispatch actions
+  const dispatch = useDispatch();
+
+  const apiRoute = useSelector((state) => state.currentAuth.apiRoute);
+  const data = useSelector((state) => state.currentAuth.links);
+
+  const fetchData = async (pageNumber) => {
+    dispatch({ type: "UPDATE_LOADING", payload: true });
+
+    if (apiRoute == "index") {
+      const api = await fetch(
+        `http://localhost:8000/api/index?page=${pageNumber}`
+      );
+      const res = await api.json();
+
+      dispatch({ type: "UPDATE_DATA", payload: res.data.data });
+      dispatch({ type: "UPDATE_LINKS", payload: res.data });
+
+      dispatch({ type: "UPDATE_LOADING", payload: false });
+    } else {
+      axios.defaults.withCredentials = true;
+
+      axios
+        .post(`http://localhost:8000/api/getData?page=${pageNumber}`)
+        .then((res) => {
+          dispatch({ type: "UPDATE_DATA", payload: res.data.data });
+          dispatch({ type: "UPDATE_LINKS", payload: res.data });
+
+          dispatch({ type: "UPDATE_LOADING", payload: false });
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+  };
+
   return (
     <>
       <Row>
         <Col lg={12} className="mt-4 pt-2">
-          <nav aria-label="Page navigation example">
-            <div className="pagination job-pagination mb-0 justify-content-center">
-              <li className="page-item disabled">
-                <Link className="page-link" href="#" tabIndex="-1">
-                  <i className="mdi mdi-chevron-double-left fs-15"></i>
-                </Link>
-              </li>
-              <li className="page-item active">
-                <Link className="page-link" href="#">
-                  1
-                </Link>
-              </li>
-              <li className="page-item">
-                <Link className="page-link" href="#">
-                  2
-                </Link>
-              </li>
-              <li className="page-item">
-                <Link className="page-link" href="#">
-                  3
-                </Link>
-              </li>
-              <li className="page-item">
-                <Link className="page-link" href="#">
-                  4
-                </Link>
-              </li>
-              <li className="page-item">
-                <Link className="page-link" href="#">
-                  <i className="mdi mdi-chevron-double-right fs-15"></i>
-                </Link>
-              </li>
-            </div>
-          </nav>
+          <Pagination
+            activePage={data?.current_page ? data?.current_page : 0}
+            itemsCountPerPage={data?.per_page ? data?.per_page : 0}
+            totalItemsCount={data?.total ? data?.total : 0}
+            onChange={(pageNumber) => {
+              fetchData(pageNumber);
+            }}
+            pageRangeDisplayed={5}
+            itemClass="page-item"
+            linkClass="page-link"
+            firstPageText="|<"
+            lastPageText=">|"
+          />
         </Col>
       </Row>
     </>
   );
 };
 
-export default Pagination;
+export default PaginationWithProgrees;

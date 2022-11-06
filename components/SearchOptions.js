@@ -3,13 +3,24 @@ import { Col, Form } from "react-bootstrap";
 import { Input, Row } from "reactstrap";
 import axios from "axios";
 import $ from "jquery";
+import { useDispatch, useSelector } from "react-redux";
 
-const JobSearchOptions = ({ setData, countries, sectorOne, sectorTwo }) => {
+const JobSearchOptions = () => {
+  //Use for all the dispatch actions
+  const dispatch = useDispatch();
+
+  const countries = useSelector((state) => state.currentAuth.countries);
+  const sectorOne = useSelector((state) => state.currentAuth.sectorOne);
+  const sectorTwo = useSelector((state) => state.currentAuth.sectorTwo);
+
   const [cities, setCities] = useState(null);
   const [town, setTown] = useState(null);
   const [localities, setLocalities] = useState(null);
 
   const getDatawithCurrentOption = async () => {
+    dispatch({ type: "UPDATE_LOADING", payload: true });
+    dispatch({ type: "UPDATE_API_ROUTE", payload: "getData" });
+
     let formData = $("#filterForm").serializeArray();
 
     axios.defaults.withCredentials = true;
@@ -18,7 +29,9 @@ const JobSearchOptions = ({ setData, countries, sectorOne, sectorTwo }) => {
         formData,
       })
       .then((res) => {
-        setData(res.data);
+        dispatch({ type: "UPDATE_DATA", payload: res.data.data });
+        dispatch({ type: "UPDATE_LINKS", payload: res.data });
+        dispatch({ type: "UPDATE_LOADING", payload: false });
       })
       .catch((err) => {
         console.log(err);
@@ -126,11 +139,13 @@ const JobSearchOptions = ({ setData, countries, sectorOne, sectorTwo }) => {
                   onChange={(e) => handleChange("country", e.target.value)}
                 >
                   <option value="">...</option>
-                  {countries.map((country, key) => (
-                    <option key={key} value={country.location}>
-                      {country.location}
-                    </option>
-                  ))}
+                  {countries
+                    ? countries.map((country, key) => (
+                        <option key={key} value={country.location}>
+                          {country.location}
+                        </option>
+                      ))
+                    : "Loading..."}
                 </select>
               </div>
             </Col>
@@ -155,7 +170,7 @@ const JobSearchOptions = ({ setData, countries, sectorOne, sectorTwo }) => {
                           {city.metro}
                         </option>
                       ))
-                    : ""}
+                    : "loading..."}
                 </select>
               </div>
             </Col>
@@ -179,7 +194,7 @@ const JobSearchOptions = ({ setData, countries, sectorOne, sectorTwo }) => {
                           {town.region}
                         </option>
                       ))
-                    : ""}
+                    : "Loading..."}
                 </select>
               </div>
             </Col>
@@ -204,7 +219,7 @@ const JobSearchOptions = ({ setData, countries, sectorOne, sectorTwo }) => {
                           {locality.locality}
                         </option>
                       ))
-                    : ""}
+                    : "Loading..."}
                 </select>
               </div>
             </Col>
@@ -225,11 +240,13 @@ const JobSearchOptions = ({ setData, countries, sectorOne, sectorTwo }) => {
                   // onChange={() => getDatawithCurrentOption()}
                 >
                   <option value="">...</option>
-                  {sectorOne.map((sector, key) => (
-                    <option key={key} value={sector.industry}>
-                      {sector.industry}
-                    </option>
-                  ))}
+                  {sectorOne
+                    ? sectorOne.map((sector, key) => (
+                        <option key={key} value={sector.industry}>
+                          {sector.industry}
+                        </option>
+                      ))
+                    : "Loading..."}
                 </select>
               </div>
             </Col>
@@ -247,11 +264,13 @@ const JobSearchOptions = ({ setData, countries, sectorOne, sectorTwo }) => {
                   // onChange={() => getDatawithCurrentOption()}
                 >
                   <option value="">...</option>
-                  {sectorTwo.map((sector, key) => (
-                    <option key={key} value={sector.industry_two}>
-                      {sector.industry_two}
-                    </option>
-                  ))}
+                  {sectorTwo
+                    ? sectorTwo.map((sector, key) => (
+                        <option key={key} value={sector.industry_two}>
+                          {sector.industry_two}
+                        </option>
+                      ))
+                    : "Loading..."}
                 </select>
               </div>
             </Col>

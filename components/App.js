@@ -4,25 +4,22 @@ import Section from "./Section";
 import SearchOptions from "./SearchOptions";
 import VacancyList from "./VacancyList";
 import Pagination from "./Pagination";
+import { useDispatch, useSelector } from "react-redux";
 
 const App = ({}) => {
-  const [data, setData] = useState(null);
-  const [countries, setCountries] = useState(null);
-  const [sectorOne, setSectorOne] = useState(null);
-  const [sectorTwo, setSectorTwo] = useState(null);
-  const [isLoading, setLoading] = useState(false);
+  //Use for all the dispatch actions
+  const dispatch = useDispatch();
+  const loading = useSelector((state) => state.currentAuth.loading);
 
   useEffect(() => {
-    setLoading(true);
     fetch("http://localhost:8000/api/index")
       .then((res) => res.json())
       .then((res) => {
-        console.log("initial", res.data);
-        setData(res.data);
-        setCountries(res.countries);
-        setSectorOne(res.sectorOne);
-        setSectorTwo(res.sectorTwo);
-        setLoading(true);
+        dispatch({ type: "UPDATE_DATA", payload: res.data.data });
+        dispatch({ type: "UPDATE_LINKS", payload: res.data });
+        dispatch({ type: "UPDATE_COUNTRIES", payload: res.countries });
+        dispatch({ type: "UPDATE_SECTOR_ONE", payload: res.sectorOne });
+        dispatch({ type: "UPDATE_SECTOR_TWO", payload: res.sectorTwo });
       });
   }, []);
 
@@ -33,20 +30,17 @@ const App = ({}) => {
         <Container>
           <Row>
             <Col lg={12}>
-              <div className="me-lg-5">
-                {!countries ? (
-                  <br />
+              <div className="me-lg-5 parentDiv">
+                <SearchOptions />
+                {!loading ? (
+                  <VacancyList />
                 ) : (
-                  <SearchOptions
-                    setData={setData}
-                    countries={countries}
-                    sectorOne={sectorOne}
-                    sectorTwo={sectorTwo}
-                  />
+                  <div
+                    className="spinner-border text-primary m-1"
+                    role="status"
+                  ></div>
                 )}
-
-                {!data ? <h1>Loading...</h1> : <VacancyList data={data} />}
-                {/* {!data ? <h1>Loading...</h1> : <Pagination data={data} />} */}
+                <Pagination />
               </div>
             </Col>
           </Row>
