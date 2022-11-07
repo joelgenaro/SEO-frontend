@@ -9,7 +9,12 @@ const JobVacancyList = () => {
   const data = useSelector((state) => state.currentAuth.data);
 
   const [modal, setModal] = useState(false);
-  const openModal = () => setModal(!modal);
+  const [companyID, setCompanyID] = useState(null);
+
+  const openModal = (e) => {
+    setCompanyID(e.target.id);
+    setModal(!modal);
+  };
 
   return (
     <>
@@ -75,6 +80,7 @@ const JobVacancyList = () => {
                   <Col lg={2} md={3}>
                     <div>
                       <button
+                        id={company["id"]}
                         onClick={openModal}
                         className="primary-link openModalBtn"
                       >
@@ -90,7 +96,11 @@ const JobVacancyList = () => {
           <div className="spinner-border text-primary m-1" role="status"></div>
         )}
 
-        <CompanyModal modal={modal} openModal={openModal} />
+        <CompanyModal
+          modal={modal}
+          companyID={companyID}
+          openModal={openModal}
+        />
       </div>
     </>
   );
