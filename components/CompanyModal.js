@@ -42,8 +42,9 @@ const CompanyModal = ({ modal, openModal, companyID }) => {
                   <h6 className="fs-17 fw-semibold mb-4">Company Location</h6>
 
                   <iframe
-                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d193595.15830869428!2d-74.119763973046!3d40.69766374874431!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c24fa5d33f083b%3A0xc80b8f06e177fe62!2sNew%20York%2C%20NY%2C%20USA!5e0!3m2!1sen!2sin!4v1628067715234!5m2!1sen!2sin"
+                    src="https://www.google.com/maps/embed/v1/place?key=AIzaSyB3zhcWhQh_reibqWWsEXc6yl6ZI26enO8&q=Eiffel+Tower,Paris+France"
                     title="title"
+                    referrerpolicy="no-referrer-when-downgrade"
                     style={{ width: `100%`, height: `250` }}
                     allowFullScreen=""
                     loading="lazy"
