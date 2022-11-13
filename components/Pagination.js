@@ -56,8 +56,6 @@ const PaginationWithProgrees = () => {
             pageRangeDisplayed={5}
             itemClass="page-item"
             linkClass="page-link"
-            firstPageText="|<"
-            lastPageText=">|"
           />
         </Col>
       </Row>
