@@ -26,6 +26,7 @@ const App = ({}) => {
   return (
     <>
       <Section />
+
       <section className="section">
         <Container>
           <Row>
