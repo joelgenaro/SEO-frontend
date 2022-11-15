@@ -12,8 +12,6 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 
 const CompanyModal = ({ modal, openModal, companyID }) => {
-  console.log("modal render");
-
   const data = useSelector((state) => state.currentAuth.data);
   const companyDetails = data
     ? data.filter((item) => item.id == companyID)[0]

@@ -16,6 +16,7 @@ const JobSearchOptions = () => {
   const [cities, setCities] = useState(null);
   const [town, setTown] = useState(null);
   const [localities, setLocalities] = useState(null);
+  const [text, setText] = useState("");
 
   const getDatawithCurrentOption = async () => {
     dispatch({ type: "UPDATE_LOADING", payload: true });
@@ -27,6 +28,24 @@ const JobSearchOptions = () => {
     axios
       .post(`http://localhost:8000/api/getData/`, {
         formData,
+      })
+      .then((res) => {
+        dispatch({ type: "UPDATE_DATA", payload: res.data.data });
+        dispatch({ type: "UPDATE_LINKS", payload: res.data });
+        dispatch({ type: "UPDATE_LOADING", payload: false });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  const getDataWithText = () => {
+    dispatch({ type: "UPDATE_LOADING", payload: true });
+
+    axios.defaults.withCredentials = true;
+    axios
+      .post(`http://localhost:8000/api/getDataWithText/`, {
+        text,
       })
       .then((res) => {
         dispatch({ type: "UPDATE_DATA", payload: res.data.data });
@@ -92,37 +111,34 @@ const JobSearchOptions = () => {
   return (
     <>
       <div className="job-list-header">
-        {/* <Form action="#">
-          <Row className="g-2" style={searchBottom}>
-            <Col lg={4} md={6}>
+        <Form action="#" id="textFilter">
+          <Row className="g-2">
+            <Col lg={8} md={6}>
               <div className="filler-job-form">
                 <i className="uil uil-briefcase-alt"></i>
                 <Input
                   type="search"
                   className="form-control filter-job-input-box-option"
                   id="exampleFormControlInput1"
-                  placeholder="Company Name, Sector"
+                  name="company"
+                  onChange={(e) => {
+                    setText(e.target.value);
+                  }}
+                  placeholder="Company Name, Sector..."
                 />
               </div>
             </Col>
             <Col lg={4} md={6}>
-              <div className="filler-job-form">
-                <i className="uil uil-briefcase-alt"></i>
-                <Input
-                  type="search"
-                  className="form-control filter-job-input-box-option"
-                  id="exampleFormControlInput1"
-                  placeholder="County, City, Town"
-                />
-              </div>
-            </Col>
-            <Col lg={4} md={6}>
-              <div to="#" className="btn btn-primary w-100">
+              <div
+                to="#"
+                onClick={() => getDataWithText()}
+                className="btn btn-primary w-100"
+              >
                 <i className="uil uil-filter"></i> Search
               </div>
             </Col>
           </Row>
-        </Form> */}
+        </Form>
         <form action="#" id="filterForm">
           <Row className="g-2">
             <Col lg={3} md={6}>
