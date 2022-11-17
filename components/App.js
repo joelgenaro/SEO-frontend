@@ -13,9 +13,7 @@ const App = ({}) => {
   const loading = useSelector((state) => state.currentAuth.loading);
 
   useEffect(() => {
-    axios.defaults.withCredentials = true;
-    axios
-      .post(`https://yes-here.online/api/index`)
+    fetch("https://yes-here.online/api/index")
       .then((res) => res.json())
       .then((res) => {
         dispatch({ type: "UPDATE_DATA", payload: res.data.data });
@@ -23,9 +21,6 @@ const App = ({}) => {
         dispatch({ type: "UPDATE_COUNTRIES", payload: res.countries });
         dispatch({ type: "UPDATE_SECTOR_ONE", payload: res.sectorOne });
         dispatch({ type: "UPDATE_SECTOR_TWO", payload: res.sectorTwo });
-      })
-      .catch((err) => {
-        console.log(err);
       });
   }, []);
 
