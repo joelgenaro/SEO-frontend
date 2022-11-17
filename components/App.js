@@ -34,14 +34,14 @@ const App = ({}) => {
             <Col lg={12}>
               <div className="me-lg-5 parentDiv">
                 <SearchOptions />
-                {/* {!loading ? (
+                {!loading ? (
                   <VacancyList />
                 ) : (
                   <div
                     className="spinner-border text-primary m-1"
                     role="status"
                   ></div>
-                )} */}
+                )}
                 <Pagination />
               </div>
             </Col>
