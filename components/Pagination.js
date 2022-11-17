@@ -17,7 +17,7 @@ const PaginationWithProgrees = () => {
 
     if (apiRoute == "index") {
       const api = await fetch(
-        `http://localhost:8000/api/index?page=${pageNumber}`
+        `https://yes-here.online/api/index?page=${pageNumber}`
       );
       const res = await api.json();
 
@@ -29,7 +29,7 @@ const PaginationWithProgrees = () => {
       axios.defaults.withCredentials = true;
 
       axios
-        .post(`http://localhost:8000/api/getData?page=${pageNumber}`)
+        .post(`https://yes-here.online/api/getData?page=${pageNumber}`)
         .then((res) => {
           dispatch({ type: "UPDATE_DATA", payload: res.data.data });
           dispatch({ type: "UPDATE_LINKS", payload: res.data });
