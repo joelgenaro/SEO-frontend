@@ -16,7 +16,6 @@ const App = ({}) => {
     fetch("https://yes-here.online/api/index")
       .then((res) => res.json())
       .then((res) => {
-        alert(res.data.json());
         dispatch({ type: "UPDATE_DATA", payload: res.data.data });
         dispatch({ type: "UPDATE_LINKS", payload: res.data });
         dispatch({ type: "UPDATE_COUNTRIES", payload: res.countries });
@@ -35,14 +34,14 @@ const App = ({}) => {
             <Col lg={12}>
               <div className="me-lg-5 parentDiv">
                 <SearchOptions />
-                {!loading ? (
+                {/* {!loading ? (
                   <VacancyList />
                 ) : (
                   <div
                     className="spinner-border text-primary m-1"
                     role="status"
                   ></div>
-                )}
+                )} */}
                 <Pagination />
               </div>
             </Col>
