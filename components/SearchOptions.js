@@ -16,7 +16,8 @@ const JobSearchOptions = () => {
   const [cities, setCities] = useState(null);
   const [town, setTown] = useState(null);
   const [localities, setLocalities] = useState(null);
-  const [text, setText] = useState("");
+  const [city, setCity] = useState("");
+  const [sector, setSector] = useState("");
 
   const getDatawithCurrentOption = async () => {
     dispatch({ type: "UPDATE_LOADING", payload: true });
@@ -40,12 +41,15 @@ const JobSearchOptions = () => {
   };
 
   const getDataWithText = () => {
+    if (sector == "" && city == "") return;
+
     dispatch({ type: "UPDATE_LOADING", payload: true });
 
     axios.defaults.withCredentials = true;
     axios
       .post(`http://localhost:8000/api/getDataWithText/`, {
-        text,
+        sector: sector,
+        city: city,
       })
       .then((res) => {
         dispatch({ type: "UPDATE_DATA", payload: res.data.data });
@@ -113,18 +117,33 @@ const JobSearchOptions = () => {
       <div className="job-list-header">
         <Form action="#" id="textFilter">
           <Row className="g-2">
-            <Col lg={8} md={6}>
+            <Col lg={4} md={6}>
               <div className="filler-job-form">
                 <i className="uil uil-briefcase-alt"></i>
                 <Input
                   type="search"
                   className="form-control filter-job-input-box-option"
                   id="exampleFormControlInput1"
-                  name="company"
+                  name="sector"
                   onChange={(e) => {
-                    setText(e.target.value);
+                    setSector(e.target.value);
                   }}
-                  placeholder="Company Name, Sector..."
+                  placeholder="Tailor, Doctor..."
+                />
+              </div>
+            </Col>{" "}
+            <Col lg={4} md={6}>
+              <div className="filler-job-form">
+                <i className="uil uil-briefcase-alt"></i>
+                <Input
+                  type="search"
+                  className="form-control filter-job-input-box-option"
+                  id="exampleFormControlInput1"
+                  name="city"
+                  onChange={(e) => {
+                    setCity(e.target.value);
+                  }}
+                  placeholder="City, Locality..."
                 />
               </div>
             </Col>
@@ -132,9 +151,9 @@ const JobSearchOptions = () => {
               <div
                 to="#"
                 onClick={() => getDataWithText()}
-                className="btn btn-primary w-100"
+                className="btn btn-info w-100"
               >
-                <i className="uil uil-filter"></i> Search
+                <i className="uil uil-search"></i> Search
               </div>
             </Col>
           </Row>
