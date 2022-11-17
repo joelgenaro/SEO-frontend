@@ -16,6 +16,7 @@ const App = ({}) => {
     fetch("https://yes-here.online/api/index")
       .then((res) => res.json())
       .then((res) => {
+        alert(res.data);
         dispatch({ type: "UPDATE_DATA", payload: res.data.data });
         dispatch({ type: "UPDATE_LINKS", payload: res.data });
         dispatch({ type: "UPDATE_COUNTRIES", payload: res.countries });
