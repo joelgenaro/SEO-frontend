@@ -22,19 +22,19 @@ const CompanyModal = ({ modal, openModal, companyID }) => {
 
   if (companyDetails?.["Company_Location_Geo"] != "") {
     companySrc =
-      "http://www.google.com/maps/embed/v1/place?key=AIzaSyBbN-R50057ZpqFT3mh4MjRWfc60JupK1A&q=" +
+      "https://www.google.com/maps/embed/v1/place?key=AIzaSyBbN-R50057ZpqFT3mh4MjRWfc60JupK1A&q=" +
       companyDetails?.["Company_Location_Geo"];
   } else if (companyDetails?.["Company_Location_Street_Address"] != "") {
     companySrc =
-      "http://www.google.com/maps/embed/v1/place?key=AIzaSyBbN-R50057ZpqFT3mh4MjRWfc60JupK1A&q=" +
+      "https://www.google.com/maps/embed/v1/place?key=AIzaSyBbN-R50057ZpqFT3mh4MjRWfc60JupK1A&q=" +
       companyDetails?.["Company_Location_Street_Address"];
   } else if (companyDetails?.["Company_Location_Name"] != "") {
     companySrc =
-      "http://www.google.com/maps/embed/v1/place?key=AIzaSyBbN-R50057ZpqFT3mh4MjRWfc60JupK1A&q=" +
+      "https://www.google.com/maps/embed/v1/place?key=AIzaSyBbN-R50057ZpqFT3mh4MjRWfc60JupK1A&q=" +
       companyDetails?.["Company_Location_Name"];
   } else {
     companySrc =
-      "http://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d37494223.23909492!2d103!3d55!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2sru!4v1668142028924!5m2!1sen!2sru";
+      "https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d37494223.23909492!2d103!3d55!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2sru!4v1668142028924!5m2!1sen!2sru";
   }
 
   return (
