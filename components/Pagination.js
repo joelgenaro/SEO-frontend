@@ -17,19 +17,18 @@ const PaginationWithProgrees = () => {
 
     if (apiRoute == "index") {
       const api = await fetch(
-        `https://yes-here.online/api/index?page=${pageNumber}`
+        `http://localhost:8000/api/index?page=${pageNumber}`
       );
       const res = await api.json();
 
       dispatch({ type: "UPDATE_DATA", payload: res.data.data });
       dispatch({ type: "UPDATE_LINKS", payload: res.data });
-
       dispatch({ type: "UPDATE_LOADING", payload: false });
     } else {
       axios.defaults.withCredentials = true;
 
       axios
-        .post(`https://yes-here.online/api/getData?page=${pageNumber}`)
+        .post(`http://localhost:8000/api/getData?page=${pageNumber}`)
         .then((res) => {
           dispatch({ type: "UPDATE_DATA", payload: res.data.data });
           dispatch({ type: "UPDATE_LINKS", payload: res.data });
