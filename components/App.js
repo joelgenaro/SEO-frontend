@@ -22,7 +22,7 @@ const App = ({}) => {
         dispatch({ type: "UPDATE_SECTOR_ONE", payload: res.sectorOne });
         dispatch({ type: "UPDATE_SECTOR_TWO", payload: res.sectorTwo });
       });
-  }, []);
+  });
 
   return (
     <>
