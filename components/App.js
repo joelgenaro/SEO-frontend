@@ -13,7 +13,7 @@ const App = ({}) => {
   const loading = useSelector((state) => state.currentAuth.loading);
 
   useEffect(() => {
-    fetch("http://yes-here.online/api/index")
+    fetch("https://yes-here.online/api/index")
       .then((res) => res.json())
       .then((res) => {
         dispatch({ type: "UPDATE_DATA", payload: res.data.data });
