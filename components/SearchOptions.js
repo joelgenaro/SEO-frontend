@@ -27,7 +27,7 @@ const JobSearchOptions = () => {
 
     axios.defaults.withCredentials = true;
     axios
-      .post(`https://yes-here.online/api/getData/`, {
+      .get(`https://yes-here.online/api/getData/`, {
         formData,
       })
       .then((res) => {
@@ -47,7 +47,7 @@ const JobSearchOptions = () => {
 
     axios.defaults.withCredentials = true;
     axios
-      .post(`https://yes-here.online/api/getDataWithText/`, {
+      .get(`https://yes-here.online/api/getDataWithText/`, {
         sector: sector,
         city: city,
       })
