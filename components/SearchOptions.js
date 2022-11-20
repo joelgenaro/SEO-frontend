@@ -30,7 +30,7 @@ const JobSearchOptions = () => {
     axios.defaults.withCredentials = true;
     axios
       .get(
-        `https://yes-here.online/api/getData?location=${country}&metro=${cities}&region=${town}&locality=${localities}&industry=${industry}&industry_two=${industry_two}&sectorThree=${sectorThree}`
+        `https://yes-here.online/api/getData?location=${country}&metro=${cities}&region=${town}&locality=${localities}&industry=${industry}&industry_two=${industry_two}&industry_three=${sectorThree}`
       )
       .then((res) => {
         dispatch({ type: "UPDATE_DATA", payload: res.data.data });
