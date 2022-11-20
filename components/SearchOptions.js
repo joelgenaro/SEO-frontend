@@ -13,24 +13,22 @@ const JobSearchOptions = () => {
   const sectorOne = useSelector((state) => state.currentAuth.sectorOne);
   const sectorTwo = useSelector((state) => state.currentAuth.sectorTwo);
 
-  const [sector, setSector] = useState("");
+  const [cities, setCities] = useState(null);
+  const [town, setTown] = useState(null);
+  const [localities, setLocalities] = useState(null);
   const [city, setCity] = useState("");
-  const [country, setCountry] = useState("");
-  const [cities, setCities] = useState("");
-  const [town, setTown] = useState("");
-  const [localities, setLocalities] = useState("");
-  const [industry, setIndustry] = useState("");
-  const [industry_two, setIndustryTwo] = useState("");
-  const [sectorThree, setSectorThree] = useState("");
+  const [sector, setSector] = useState("");
 
   const getDatawithCurrentOption = async () => {
     dispatch({ type: "UPDATE_LOADING", payload: true });
     dispatch({ type: "UPDATE_API_ROUTE", payload: "getData" });
 
+    let formData = $("#filterForm").serializeArray();
+
     axios.defaults.withCredentials = true;
     axios
       .get(
-        `https://yes-here.online/api/getData?location=${country}&metro=${cities}&region=${town}&locality=${localities}&industry=${industry}&industry_two=${industry_two}&industry_three=${sectorThree}`
+        `https://yes-here.online/api/getData?location=${formData[0].value}&metro=${formData[1].value}&region=${formData[2].value}&locality=${formData[3].value}&industry=${formData[4].value}&industry_two=${formData[5].value}&industry_three=${formData[6].value}`
       )
       .then((res) => {
         dispatch({ type: "UPDATE_DATA", payload: res.data.data });
@@ -50,7 +48,11 @@ const JobSearchOptions = () => {
     axios.defaults.withCredentials = true;
     axios
       .get(
-        `https://yes-here.online/api/getDataWithText?sector=${sector}&city=${city}`
+        `https://yes-here.online/api/getDataWithText?sector=${sector}&city=${city}`,
+        {
+          sector: sector,
+          city: city,
+        }
       )
       .then((res) => {
         dispatch({ type: "UPDATE_DATA", payload: res.data.data });
@@ -91,7 +93,6 @@ const JobSearchOptions = () => {
         .then((res) => {
           switch (type) {
             case "country":
-              setCountry(value);
               setCities(res.data);
               break;
 
@@ -246,6 +247,7 @@ const JobSearchOptions = () => {
                   name="locality"
                   id="locality"
                   aria-label="Default select example"
+                  // onChange={() => getDatawithCurrentOption()}
                 >
                   <option value="">...</option>
 
@@ -273,9 +275,7 @@ const JobSearchOptions = () => {
                   name="industry"
                   id="sectorOne"
                   aria-label="Default select example"
-                  onChange={(e) => {
-                    setIndustry(e.target.value);
-                  }}
+                  // onChange={() => getDatawithCurrentOption()}
                 >
                   <option value="">...</option>
                   {sectorOne
@@ -299,9 +299,7 @@ const JobSearchOptions = () => {
                   name="industry_two"
                   id="sectorTwo"
                   aria-label="Default select example"
-                  onChange={(e) => {
-                    setIndustryTwo(e.target.value);
-                  }}
+                  // onChange={() => getDatawithCurrentOption()}
                 >
                   <option value="">...</option>
                   {sectorTwo
@@ -325,9 +323,7 @@ const JobSearchOptions = () => {
                   name="sectorThree"
                   id="sectorThree"
                   aria-label="Default select example"
-                  onChange={(e) => {
-                    setSectorThree(e.target.value);
-                  }}
+                  // onChange={() => getDatawithCurrentOption()}
                 >
                   <option value="">...</option>
                 </select>
