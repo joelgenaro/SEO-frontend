@@ -24,13 +24,13 @@ const JobSearchOptions = () => {
     dispatch({ type: "UPDATE_API_ROUTE", payload: "getData" });
 
     let formData = $("#filterForm").serializeArray();
-
     axios.defaults.withCredentials = true;
     axios
-      .get(`https://yes-here.online/api/getData/`, {
+      .post(`https://yes-here.online/api/getData/`, {
         formData,
       })
       .then((res) => {
+        console.log(res.data);
         dispatch({ type: "UPDATE_DATA", payload: res.data.data });
         dispatch({ type: "UPDATE_LINKS", payload: res.data });
         dispatch({ type: "UPDATE_LOADING", payload: false });
@@ -47,7 +47,7 @@ const JobSearchOptions = () => {
 
     axios.defaults.withCredentials = true;
     axios
-      .get(`https://yes-here.online/api/getDataWithText/`, {
+      .post(`https://yes-here.online/api/getDataWithText/`, {
         sector: sector,
         city: city,
       })
