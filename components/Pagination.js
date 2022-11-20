@@ -28,7 +28,7 @@ const PaginationWithProgrees = () => {
       axios.defaults.withCredentials = true;
 
       axios
-        .post(`https://yes-here.online/api/getData?page=${pageNumber}`)
+        .get(`https://yes-here.online/api/getData?page=${pageNumber}`)
         .then((res) => {
           dispatch({ type: "UPDATE_DATA", payload: res.data.data });
           dispatch({ type: "UPDATE_LINKS", payload: res.data });
