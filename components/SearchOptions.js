@@ -47,11 +47,7 @@ const JobSearchOptions = () => {
     axios.defaults.withCredentials = true;
     axios
       .get(
-        `https://yes-here.online/api/getDataWithText?sector=${sector}&city=${city}`,
-        {
-          sector: sector,
-          city: city,
-        }
+        `https://yes-here.online/api/getDataWithText?sector=${sector}&city=${city}`
       )
       .then((res) => {
         dispatch({ type: "UPDATE_DATA", payload: res.data.data });
@@ -115,7 +111,7 @@ const JobSearchOptions = () => {
   return (
     <>
       <div className="job-list-header">
-        <Form action="#" id="textFilter">
+        {/* <Form action="#" id="textFilter">
           <Row className="g-2">
             <Col lg={4} md={6}>
               <div className="filler-job-form">
@@ -157,7 +153,7 @@ const JobSearchOptions = () => {
               </div>
             </Col>
           </Row>
-        </Form>
+        </Form> */}
         <form action="#" id="filterForm">
           <Row className="g-2">
             <Col lg={4} md={6}>
