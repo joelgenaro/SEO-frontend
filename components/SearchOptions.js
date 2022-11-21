@@ -11,11 +11,10 @@ const JobSearchOptions = () => {
 
   const countries = useSelector((state) => state.currentAuth.countries);
   const sectorOne = useSelector((state) => state.currentAuth.sectorOne);
-  const sectorTwo = useSelector((state) => state.currentAuth.sectorTwo);
 
   const [cities, setCities] = useState(null);
   const [town, setTown] = useState(null);
-  const [localities, setLocalities] = useState(null);
+  const [sectorTwo, setSectorTwo] = useState(null);
   const [city, setCity] = useState("");
   const [sector, setSector] = useState("");
 
@@ -28,7 +27,7 @@ const JobSearchOptions = () => {
     axios.defaults.withCredentials = true;
     axios
       .get(
-        `https://yes-here.online/api/getData?location=${formData[0].value}&metro=${formData[1].value}&region=${formData[2].value}&locality=${formData[3].value}&industry=${formData[4].value}&industry_two=${formData[5].value}&industry_three=${formData[6].value}`
+        `https://yes-here.online/api/getData?location=${formData[0].value}&metro=${formData[1].value}&region=${formData[2].value}&industry=${formData[3].value}&industry_two=${formData[4].value}`
       )
       .then((res) => {
         dispatch({ type: "UPDATE_DATA", payload: res.data.data });
@@ -66,27 +65,25 @@ const JobSearchOptions = () => {
 
   // get childrens when changing parent option
   function handleChange(type, value) {
-    if (value == "") {
-      switch (type) {
-        case "country":
-          setCities(null);
-          setTown(null);
-          setLocalities(null);
-          break;
+    switch (type) {
+      case "country":
+        setCities(null);
+        setTown(null);
+        break;
 
-        case "city":
-          setTown(null);
-          setLocalities(null);
-          break;
+      case "city":
+        setTown(null);
+        break;
 
-        case "town":
-          setLocalities(null);
-          break;
+      case "sectorOne":
+        setSectorTwo(null);
+        break;
 
-        default:
-          break;
-      }
-    } else {
+      default:
+        break;
+    }
+
+    if (value != "") {
       axios.defaults.withCredentials = true;
       axios
         .get(`https://yes-here.online/api/getSearchOptions/${type}/${value}`)
@@ -100,8 +97,8 @@ const JobSearchOptions = () => {
               setTown(res.data);
               break;
 
-            case "town":
-              setLocalities(res.data);
+            case "sectorOne":
+              setSectorTwo(res.data);
               break;
 
             default:
@@ -163,7 +160,7 @@ const JobSearchOptions = () => {
         </Form>
         <form action="#" id="filterForm">
           <Row className="g-2">
-            <Col lg={3} md={6}>
+            <Col lg={4} md={6}>
               <div className="filler-job-form">
                 <label htmlFor="country" className="form-label">
                   Country
@@ -187,7 +184,7 @@ const JobSearchOptions = () => {
                 </select>
               </div>
             </Col>
-            <Col lg={3} md={6}>
+            <Col lg={4} md={6}>
               <div className="filler-job-form">
                 <label htmlFor="city" className="form-label">
                   City
@@ -212,7 +209,7 @@ const JobSearchOptions = () => {
                 </select>
               </div>
             </Col>
-            <Col lg={3} md={6}>
+            <Col lg={4} md={6}>
               <div className="filler-job-form">
                 <label htmlFor="town" className="form-label">
                   Town
@@ -223,7 +220,6 @@ const JobSearchOptions = () => {
                   name="region"
                   id="town"
                   aria-label="Default select example"
-                  onChange={(e) => handleChange("town", e.target.value)}
                 >
                   <option value="">...</option>
                   {town
@@ -236,7 +232,7 @@ const JobSearchOptions = () => {
                 </select>
               </div>
             </Col>
-            <Col lg={3} md={6}>
+            {/* <Col lg={3} md={6}>
               <div className="filler-job-form">
                 <label htmlFor="locality" className="form-label">
                   Locality
@@ -260,11 +256,11 @@ const JobSearchOptions = () => {
                     : "Loading..."}
                 </select>
               </div>
-            </Col>
+            </Col> */}
           </Row>
 
           <Row className="g-2">
-            <Col lg={3} md={6}>
+            <Col lg={4} md={6}>
               <div className="filler-job-form">
                 <label htmlFor="sectorOne" className="form-label">
                   Sector 1
@@ -275,7 +271,7 @@ const JobSearchOptions = () => {
                   name="industry"
                   id="sectorOne"
                   aria-label="Default select example"
-                  // onChange={() => getDatawithCurrentOption()}
+                  onChange={(e) => handleChange("sectorOne", e.target.value)}
                 >
                   <option value="">...</option>
                   {sectorOne
@@ -288,7 +284,7 @@ const JobSearchOptions = () => {
                 </select>
               </div>
             </Col>
-            <Col lg={3} md={6}>
+            <Col lg={4} md={6}>
               <div className="filler-job-form">
                 <label htmlFor="sectorTwo" className="form-label">
                   Sector 2
@@ -312,7 +308,7 @@ const JobSearchOptions = () => {
                 </select>
               </div>
             </Col>
-            <Col lg={3} md={6}>
+            {/* <Col lg={3} md={6}>
               <div className="filler-job-form">
                 <label htmlFor="sectorThree" className="form-label">
                   Sector 3
@@ -328,8 +324,8 @@ const JobSearchOptions = () => {
                   <option value="">...</option>
                 </select>
               </div>
-            </Col>
-            <Col lg={3} md={6}>
+            </Col> */}
+            <Col lg={4} md={6}>
               <label className="form-label">{"."} </label>
               <div
                 onClick={() => getDatawithCurrentOption()}
