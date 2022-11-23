@@ -6,6 +6,7 @@ const initState = {
   sectorOne: null,
   sectorTwo: null,
   links: null,
+  page: 1,
 };
 
 const currentAuthReducer = (state = initState, action) => {
@@ -24,6 +25,8 @@ const currentAuthReducer = (state = initState, action) => {
       return { ...state, sectorTwo: action.payload };
     case "UPDATE_LINKS":
       return { ...state, links: action.payload };
+    case "UPDATE_PAGE":
+      return { ...state, page: action.payload };
 
     default:
       return state;

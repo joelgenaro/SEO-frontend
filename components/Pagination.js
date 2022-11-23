@@ -13,9 +13,9 @@ const PaginationWithProgrees = () => {
   const data = useSelector((state) => state.currentAuth.links);
 
   const fetchData = async (pageNumber) => {
-    dispatch({ type: "UPDATE_LOADING", payload: true });
-
     if (apiRoute == "index") {
+      dispatch({ type: "UPDATE_LOADING", payload: true });
+
       const api = await fetch(
         `https://yes-here.online/api/index?page=${pageNumber}`
       );
@@ -25,18 +25,21 @@ const PaginationWithProgrees = () => {
       dispatch({ type: "UPDATE_LINKS", payload: res.data });
       dispatch({ type: "UPDATE_LOADING", payload: false });
     } else {
-      axios.defaults.withCredentials = true;
+      dispatch({ type: "UPDATE_PAGE", payload: pageNumber });
 
-      axios
-        .get(`https://yes-here.online/api/getData?page=${pageNumber}`)
-        .then((res) => {
-          dispatch({ type: "UPDATE_DATA", payload: res.data.data });
-          dispatch({ type: "UPDATE_LINKS", payload: res.data });
-          dispatch({ type: "UPDATE_LOADING", payload: false });
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+      // axios.defaults.withCredentials = true;
+
+      // axios
+      //   .get(`https://yes-here.online/api/getData?page=${pageNumber}`)
+      //   .then((res) => {
+      //     console.log(res.data);
+      //     dispatch({ type: "UPDATE_DATA", payload: res.data.data });
+      //     dispatch({ type: "UPDATE_LINKS", payload: res.data });
+      //     dispatch({ type: "UPDATE_LOADING", payload: false });
+      //   })
+      //   .catch((err) => {
+      //     console.log(err);
+      //   });
     }
   };
 

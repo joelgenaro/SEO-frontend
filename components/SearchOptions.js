@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useLayoutEffect } from "react";
 import { Col, Form } from "react-bootstrap";
 import { Input, Row } from "reactstrap";
 import axios from "axios";
@@ -10,6 +10,7 @@ const JobSearchOptions = () => {
   const dispatch = useDispatch();
 
   const countries = useSelector((state) => state.currentAuth.countries);
+  const pageNumber = useSelector((state) => state.currentAuth.page);
 
   const [cities, setCities] = useState(null);
   const [town, setTown] = useState(null);
@@ -17,6 +18,16 @@ const JobSearchOptions = () => {
   const [sectorTwo, setSectorTwo] = useState(null);
   const [city, setCity] = useState("");
   const [sector, setSector] = useState("");
+
+  const firstUpdate = useRef(true);
+
+  useEffect(() => {
+    if (pageNumber == 1) {
+      console.log("bo");
+      return;
+    }
+    getDatawithCurrentOption();
+  }, [pageNumber]);
 
   const getDatawithCurrentOption = async () => {
     dispatch({ type: "UPDATE_LOADING", payload: true });
@@ -27,7 +38,7 @@ const JobSearchOptions = () => {
     axios.defaults.withCredentials = true;
     axios
       .get(
-        `https://yes-here.online/api/getData?location=${formData[0].value}&metro=${formData[1].value}&region=${formData[2].value}&industry=${formData[3].value}&industry_two=${formData[4].value}`
+        `https://yes-here.online/api/getData?page=${pageNumber}&location=${formData[0].value}&metro=${formData[1].value}&region=${formData[2].value}&industry=${formData[3].value}&industry_two=${formData[4].value}`
       )
       .then((res) => {
         dispatch({ type: "UPDATE_DATA", payload: res.data.data });
@@ -87,6 +98,7 @@ const JobSearchOptions = () => {
         .then((res) => {
           switch (type) {
             case "country":
+              console.log(res.data);
               setCities(res.data.data);
               setSectorOne(res.data.sectorOne);
               break;
@@ -271,15 +283,14 @@ const JobSearchOptions = () => {
                   aria-label="Default select example"
                   onChange={(e) => handleChange("sectorOne", e.target.value)}
                 >
-                  {sectorOne ? (
-                    sectorOne.map((sector, key) => (
-                      <option key={key} value={sector.industry}>
-                        {sector.industry}
-                      </option>
-                    ))
-                  ) : (
-                    <option value="">...</option>
-                  )}
+                  <option value="">...</option>
+                  {sectorOne
+                    ? sectorOne.map((sector, key) => (
+                        <option key={key} value={sector.industry}>
+                          {sector.industry}
+                        </option>
+                      ))
+                    : ""}
                 </select>
               </div>
             </Col>
