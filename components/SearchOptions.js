@@ -10,10 +10,10 @@ const JobSearchOptions = () => {
   const dispatch = useDispatch();
 
   const countries = useSelector((state) => state.currentAuth.countries);
-  const sectorOne = useSelector((state) => state.currentAuth.sectorOne);
 
   const [cities, setCities] = useState(null);
   const [town, setTown] = useState(null);
+  const [sectorOne, setSectorOne] = useState(null);
   const [sectorTwo, setSectorTwo] = useState(null);
   const [city, setCity] = useState("");
   const [sector, setSector] = useState("");
@@ -65,6 +65,7 @@ const JobSearchOptions = () => {
       case "country":
         setCities(null);
         setTown(null);
+        setSectorOne(null);
         break;
 
       case "city":
@@ -86,15 +87,16 @@ const JobSearchOptions = () => {
         .then((res) => {
           switch (type) {
             case "country":
-              setCities(res.data);
+              setCities(res.data.data);
+              setSectorOne(res.data.sectorOne);
               break;
 
             case "city":
-              setTown(res.data);
+              setTown(res.data.data);
               break;
 
             case "sectorOne":
-              setSectorTwo(res.data);
+              setSectorTwo(res.data.data);
               break;
 
             default:
@@ -269,14 +271,15 @@ const JobSearchOptions = () => {
                   aria-label="Default select example"
                   onChange={(e) => handleChange("sectorOne", e.target.value)}
                 >
-                  <option value="">...</option>
-                  {sectorOne
-                    ? sectorOne.map((sector, key) => (
-                        <option key={key} value={sector.industry}>
-                          {sector.industry}
-                        </option>
-                      ))
-                    : "Loading..."}
+                  {sectorOne ? (
+                    sectorOne.map((sector, key) => (
+                      <option key={key} value={sector.industry}>
+                        {sector.industry}
+                      </option>
+                    ))
+                  ) : (
+                    <option value="">...</option>
+                  )}
                 </select>
               </div>
             </Col>
