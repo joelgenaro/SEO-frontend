@@ -26,20 +26,6 @@ const PaginationWithProgrees = () => {
       dispatch({ type: "UPDATE_LOADING", payload: false });
     } else {
       dispatch({ type: "UPDATE_PAGE", payload: pageNumber });
-
-      // axios.defaults.withCredentials = true;
-
-      // axios
-      //   .get(`https://yes-here.online/api/getData?page=${pageNumber}`)
-      //   .then((res) => {
-      //     console.log(res.data);
-      //     dispatch({ type: "UPDATE_DATA", payload: res.data.data });
-      //     dispatch({ type: "UPDATE_LINKS", payload: res.data });
-      //     dispatch({ type: "UPDATE_LOADING", payload: false });
-      //   })
-      //   .catch((err) => {
-      //     console.log(err);
-      //   });
     }
   };
 

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useLayoutEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Col, Form } from "react-bootstrap";
 import { Input, Row } from "reactstrap";
 import axios from "axios";
@@ -19,11 +19,11 @@ const JobSearchOptions = () => {
   const [city, setCity] = useState("");
   const [sector, setSector] = useState("");
 
-  const firstUpdate = useRef(true);
+  const isFirstRun = useRef(true);
 
   useEffect(() => {
-    if (pageNumber == 1) {
-      console.log("bo");
+    if (isFirstRun.current && pageNumber == 1) {
+      isFirstRun.current = false;
       return;
     }
     getDatawithCurrentOption();
@@ -186,8 +186,8 @@ const JobSearchOptions = () => {
                   <option value="">...</option>
                   {countries
                     ? countries.map((country, key) => (
-                        <option key={key} value={country.location}>
-                          {country.location}
+                        <option key={key} value={country["location_country"]}>
+                          {country["location_country"]}
                         </option>
                       ))
                     : "Loading..."}

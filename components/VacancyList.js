@@ -36,11 +36,11 @@ const JobVacancyList = () => {
                     <div className="mb-2 mb-md-0">
                       <h5 className="fs-18 mb-0">
                         <Link href="/jobdetails" className="text-dark">
-                          {"Country: " + company["location"]}
+                          {"location_country: " + company["location_country"]}
                         </Link>
                       </h5>
                       <p className="text-muted fs-14 mb-0">
-                        {"Locality: " + company["locality"]}
+                        {"locality: " + company["locality"]}
                       </p>
                     </div>
                   </Col>
@@ -51,7 +51,7 @@ const JobVacancyList = () => {
                         <i className="mdi mdi-map-marker text-primary me-1"></i>
                       </div>
                       <p className="text-muted mb-0">
-                        {"City: " + company["metro"]}
+                        {"metro: " + company["metro"]}
                       </p>
                     </div>
                   </Col>
@@ -62,7 +62,7 @@ const JobVacancyList = () => {
                         <i className="uil uil-clock-three text-primary me-1"></i>
                       </div>
                       <p className="text-muted mb-0">
-                        {"Town: " + company["region"]}
+                        {"region: " + company["region"]}
                       </p>
                     </div>
                   </Col>
