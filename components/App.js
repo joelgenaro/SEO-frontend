@@ -19,8 +19,6 @@ const App = ({}) => {
         dispatch({ type: "UPDATE_DATA", payload: res.data.data });
         dispatch({ type: "UPDATE_LINKS", payload: res.data });
         dispatch({ type: "UPDATE_COUNTRIES", payload: res.countries });
-        dispatch({ type: "UPDATE_SECTOR_ONE", payload: res.sectorOne });
-        dispatch({ type: "UPDATE_SECTOR_TWO", payload: res.sectorTwo });
         dispatch({ type: "UPDATE_LOADING", payload: false });
       });
   }, []);

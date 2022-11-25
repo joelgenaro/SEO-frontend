@@ -11,11 +11,11 @@ const JobSearchOptions = () => {
 
   const countries = useSelector((state) => state.currentAuth.countries);
   const pageNumber = useSelector((state) => state.currentAuth.page);
-  const sectorOne = useSelector((state) => state.currentAuth.sectorOne);
-  const sectorTwo = useSelector((state) => state.currentAuth.sectorTwo);
 
   const [cities, setCities] = useState(null);
   const [town, setTown] = useState(null);
+  const [sectorOne, setSectorOne] = useState(null);
+  const [sectorTwo, setSectorTwo] = useState(null);
   const [city, setCity] = useState("");
   const [sector, setSector] = useState("");
 
@@ -76,6 +76,8 @@ const JobSearchOptions = () => {
       case "country":
         setCities(null);
         setTown(null);
+        setSectorOne(null);
+        setSectorTwo(null);
         break;
 
       case "city":
@@ -93,11 +95,13 @@ const JobSearchOptions = () => {
         .then((res) => {
           switch (type) {
             case "country":
-              setCities(res.data);
+              setCities(res.data.data);
+              setSectorOne(res.data.sectorOne);
+              setSectorTwo(res.data.sectorTwo);
               break;
 
             case "city":
-              setTown(res.data);
+              setTown(res.data.data);
               break;
 
             default:
