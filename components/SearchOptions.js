@@ -38,7 +38,7 @@ const JobSearchOptions = () => {
     axios.defaults.withCredentials = true;
     axios
       .get(
-        `https://yes-here.online/api/getData?page=${pageNumber}&country=${formData[0].value}&city=${formData[1].value}&town=${formData[2].value}&sectorOne=${formData[3].value}&sectorTwo=${formData[4].value}`
+        `http://localhost:8000/api/getData?page=${pageNumber}&country=${formData[0].value}&city=${formData[1].value}&town=${formData[2].value}&sectorOne=${formData[3].value}&sectorTwo=${formData[4].value}`
       )
       .then((res) => {
         dispatch({ type: "UPDATE_DATA", payload: res.data.data });
@@ -58,7 +58,7 @@ const JobSearchOptions = () => {
     axios.defaults.withCredentials = true;
     axios
       .get(
-        `https://yes-here.online/api/getDataWithText?sector=${sector}&city=${city}`
+        `http://localhost:8000/api/getDataWithText?sector=${sector}&city=${city}`
       )
       .then((res) => {
         dispatch({ type: "UPDATE_DATA", payload: res.data.data });
@@ -82,6 +82,8 @@ const JobSearchOptions = () => {
 
       case "city":
         setTown(null);
+        setSectorOne(null);
+        setSectorTwo(null);
         break;
 
       default:
@@ -91,7 +93,7 @@ const JobSearchOptions = () => {
     if (value != "") {
       axios.defaults.withCredentials = true;
       axios
-        .get(`https://yes-here.online/api/getSearchOptions/${type}/${value}`)
+        .get(`http://localhost:8000/api/getSearchOptions/${type}/${value}`)
         .then((res) => {
           switch (type) {
             case "country":
@@ -102,6 +104,8 @@ const JobSearchOptions = () => {
 
             case "city":
               setTown(res.data.data);
+              setSectorOne(res.data.sectorOne);
+              setSectorTwo(res.data.sectorTwo);
               break;
 
             default:
