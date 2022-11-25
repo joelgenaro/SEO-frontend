@@ -40,7 +40,10 @@ const JobVacancyList = () => {
                         </Link>
                       </h5>
                       <p className="text-muted fs-14 mb-0">
-                        {"locality: " + company["locality"]}
+                        {"sector: " + company["industry"]}
+                      </p>
+                      <p className="text-muted fs-14 mb-0">
+                        {"sector_2: " + company["industry_two"]}
                       </p>
                     </div>
                   </Col>
@@ -51,7 +54,7 @@ const JobVacancyList = () => {
                         <i className="mdi mdi-map-marker text-primary me-1"></i>
                       </div>
                       <p className="text-muted mb-0">
-                        {"metro: " + company["metro"]}
+                        {"region: " + company["region"]}
                       </p>
                     </div>
                   </Col>
@@ -62,7 +65,7 @@ const JobVacancyList = () => {
                         <i className="uil uil-clock-three text-primary me-1"></i>
                       </div>
                       <p className="text-muted mb-0">
-                        {"region: " + company["region"]}
+                        {"locality: " + company["locality"]}
                       </p>
                     </div>
                   </Col>

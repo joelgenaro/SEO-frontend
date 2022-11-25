@@ -11,11 +11,11 @@ const JobSearchOptions = () => {
 
   const countries = useSelector((state) => state.currentAuth.countries);
   const pageNumber = useSelector((state) => state.currentAuth.page);
+  const sectorOne = useSelector((state) => state.currentAuth.sectorOne);
+  const sectorTwo = useSelector((state) => state.currentAuth.sectorTwo);
 
   const [cities, setCities] = useState(null);
   const [town, setTown] = useState(null);
-  const [sectorOne, setSectorOne] = useState(null);
-  const [sectorTwo, setSectorTwo] = useState(null);
   const [city, setCity] = useState("");
   const [sector, setSector] = useState("");
 
@@ -38,7 +38,7 @@ const JobSearchOptions = () => {
     axios.defaults.withCredentials = true;
     axios
       .get(
-        `https://yes-here.online/api/getData?page=${pageNumber}&location=${formData[0].value}&metro=${formData[1].value}&region=${formData[2].value}&industry=${formData[3].value}&industry_two=${formData[4].value}`
+        `https://yes-here.online/api/getData?page=${pageNumber}&country=${formData[0].value}&city=${formData[1].value}&town=${formData[2].value}&sectorOne=${formData[3].value}&sectorTwo=${formData[4].value}`
       )
       .then((res) => {
         dispatch({ type: "UPDATE_DATA", payload: res.data.data });
@@ -76,15 +76,10 @@ const JobSearchOptions = () => {
       case "country":
         setCities(null);
         setTown(null);
-        setSectorOne(null);
         break;
 
       case "city":
         setTown(null);
-        break;
-
-      case "sectorOne":
-        setSectorTwo(null);
         break;
 
       default:
@@ -98,17 +93,11 @@ const JobSearchOptions = () => {
         .then((res) => {
           switch (type) {
             case "country":
-              console.log(res.data);
-              setCities(res.data.data);
-              setSectorOne(res.data.sectorOne);
+              setCities(res.data);
               break;
 
             case "city":
-              setTown(res.data.data);
-              break;
-
-            case "sectorOne":
-              setSectorTwo(res.data.data);
+              setTown(res.data);
               break;
 
             default:
@@ -178,7 +167,7 @@ const JobSearchOptions = () => {
                 <select
                   className="form-select form-select-option"
                   data-trigger
-                  name="location"
+                  name="country"
                   id="country"
                   aria-label="Default select example"
                   onChange={(e) => handleChange("country", e.target.value)}
@@ -202,7 +191,7 @@ const JobSearchOptions = () => {
                 <select
                   className="form-select form-select-option"
                   data-trigger
-                  name="metro"
+                  name="city"
                   id="city"
                   aria-label="Default select example"
                   onChange={(e) => handleChange("city", e.target.value)}
@@ -211,8 +200,8 @@ const JobSearchOptions = () => {
 
                   {cities
                     ? cities.map((city, key) => (
-                        <option key={key} value={city.metro}>
-                          {city.metro}
+                        <option key={key} value={city.region}>
+                          {city.region}
                         </option>
                       ))
                     : "loading..."}
@@ -227,15 +216,15 @@ const JobSearchOptions = () => {
                 <select
                   className="form-select form-select-option"
                   data-trigger
-                  name="region"
+                  name="town"
                   id="town"
                   aria-label="Default select example"
                 >
                   <option value="">...</option>
                   {town
                     ? town.map((town, key) => (
-                        <option key={key} value={town.region}>
-                          {town.region}
+                        <option key={key} value={town.locality}>
+                          {town.locality}
                         </option>
                       ))
                     : "Loading..."}
@@ -278,10 +267,9 @@ const JobSearchOptions = () => {
                 <select
                   className="form-select form-select-option"
                   data-trigger
-                  name="industry"
+                  name="sectorOne"
                   id="sectorOne"
                   aria-label="Default select example"
-                  onChange={(e) => handleChange("sectorOne", e.target.value)}
                 >
                   <option value="">...</option>
                   {sectorOne
@@ -302,7 +290,7 @@ const JobSearchOptions = () => {
                 <select
                   className="form-select form-select-option"
                   data-trigger
-                  name="industry_two"
+                  name="sectorTwo"
                   id="sectorTwo"
                   aria-label="Default select example"
                   // onChange={() => getDatawithCurrentOption()}
