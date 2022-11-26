@@ -27,6 +27,7 @@ const JobSearchOptions = () => {
       return;
     }
     getDatawithCurrentOption();
+    // getDataWithText();
   }, [pageNumber]);
 
   const getDatawithCurrentOption = async () => {
@@ -88,6 +89,10 @@ const JobSearchOptions = () => {
         }
         break;
 
+      case "sectorOne":
+        setSectorTwo(null);
+        break;
+
       default:
         break;
     }
@@ -97,17 +102,20 @@ const JobSearchOptions = () => {
       axios
         .get(`https://yes-here.online/api/getSearchOptions/${type}/${value}`)
         .then((res) => {
+          console.log(res.data);
           switch (type) {
             case "country":
               setCities(res.data.data);
               setSectorOne(res.data.sectorOne);
-              setSectorTwo(res.data.sectorTwo);
               break;
 
             case "city":
               setTown(res.data.data);
               setSectorOne(res.data.sectorOne);
-              setSectorTwo(res.data.sectorTwo);
+              break;
+
+            case "sectorOne":
+              setSectorTwo(res.data.data);
               break;
 
             default:
@@ -241,31 +249,6 @@ const JobSearchOptions = () => {
                 </select>
               </div>
             </Col>
-            {/* <Col lg={3} md={6}>
-              <div className="filler-job-form">
-                <label htmlFor="locality" className="form-label">
-                  Locality
-                </label>
-                <select
-                  className="form-select form-select-option"
-                  data-trigger
-                  name="locality"
-                  id="locality"
-                  aria-label="Default select example"
-                  // onChange={() => getDatawithCurrentOption()}
-                >
-                  <option value="">...</option>
-
-                  {localities
-                    ? localities.map((locality, key) => (
-                        <option key={key} value={locality.locality}>
-                          {locality.locality}
-                        </option>
-                      ))
-                    : "Loading..."}
-                </select>
-              </div>
-            </Col> */}
           </Row>
 
           <Row className="g-2">
@@ -280,6 +263,7 @@ const JobSearchOptions = () => {
                   name="sectorOne"
                   id="sectorOne"
                   aria-label="Default select example"
+                  onChange={(e) => handleChange("sectorOne", e.target.value)}
                 >
                   <option value="">...</option>
                   {sectorOne
@@ -303,7 +287,6 @@ const JobSearchOptions = () => {
                   name="sectorTwo"
                   id="sectorTwo"
                   aria-label="Default select example"
-                  // onChange={() => getDatawithCurrentOption()}
                 >
                   <option value="">...</option>
                   {sectorTwo
@@ -316,23 +299,6 @@ const JobSearchOptions = () => {
                 </select>
               </div>
             </Col>
-            {/* <Col lg={3} md={6}>
-              <div className="filler-job-form">
-                <label htmlFor="sectorThree" className="form-label">
-                  Sector 3
-                </label>
-                <select
-                  className="form-select form-select-option"
-                  data-trigger
-                  name="sectorThree"
-                  id="sectorThree"
-                  aria-label="Default select example"
-                  // onChange={() => getDatawithCurrentOption()}
-                >
-                  <option value="">...</option>
-                </select>
-              </div>
-            </Col> */}
             <Col lg={4} md={6}>
               <label className="form-label">{"."} </label>
               <div
