@@ -89,10 +89,6 @@ const JobSearchOptions = () => {
         }
         break;
 
-      case "sectorOne":
-        setSectorTwo(null);
-        break;
-
       default:
         break;
     }
@@ -102,20 +98,17 @@ const JobSearchOptions = () => {
       axios
         .get(`https://yes-here.online/api/getSearchOptions/${type}/${value}`)
         .then((res) => {
-          console.log(res.data);
           switch (type) {
             case "country":
               setCities(res.data.data);
               setSectorOne(res.data.sectorOne);
+              setSectorTwo(res.data.sectorTwo);
               break;
 
             case "city":
               setTown(res.data.data);
               setSectorOne(res.data.sectorOne);
-              break;
-
-            case "sectorOne":
-              setSectorTwo(res.data.data);
+              setSectorTwo(res.data.sectorTwo);
               break;
 
             default:
