@@ -5,6 +5,18 @@ import axios from "axios";
 import $ from "jquery";
 import { useDispatch, useSelector } from "react-redux";
 
+function sectorFilter(elem) {
+  if (elem.industry == null && elem.industry_two == null) {
+    return "";
+  } else if (elem.industry == null) {
+    return elem.industry_two;
+  } else if (elem.industry_two == null) {
+    return elem.industry;
+  } else {
+    return elem.industry + " - " + elem.industry_two;
+  }
+}
+
 const JobSearchOptions = () => {
   //Use for all the dispatch actions
   const dispatch = useDispatch();
@@ -12,12 +24,13 @@ const JobSearchOptions = () => {
   const countries = useSelector((state) => state.currentAuth.countries);
   const pageNumber = useSelector((state) => state.currentAuth.page);
 
-  const [cities, setCities] = useState(null);
+  const [city, setCity] = useState(null);
   const [town, setTown] = useState(null);
-  const [sectorOne, setSectorOne] = useState(null);
-  const [sectorTwo, setSectorTwo] = useState(null);
-  const [city, setCity] = useState("");
-  const [sector, setSector] = useState("");
+  const [locality, setLocality] = useState(null);
+  const [sector, setSector] = useState(null);
+  const [search, setSearch] = useState("");
+  const [disableForMenu, setDisableForMenu] = useState(false);
+  const [disableForTxt, setDisableForTxt] = useState(false);
 
   const isFirstRun = useRef(true);
 
@@ -26,8 +39,7 @@ const JobSearchOptions = () => {
       isFirstRun.current = false;
       return;
     }
-    getDatawithCurrentOption();
-    // getDataWithText();
+    disableForMenu == false ? getDatawithCurrentOption() : getDataWithText();
   }, [pageNumber]);
 
   const getDatawithCurrentOption = async () => {
@@ -39,7 +51,7 @@ const JobSearchOptions = () => {
     axios.defaults.withCredentials = true;
     axios
       .get(
-        `https://yes-here.online/api/getData?page=${pageNumber}&country=${formData[0].value}&city=${formData[1].value}&town=${formData[2].value}&sectorOne=${formData[3].value}&sectorTwo=${formData[4].value}`
+        `https://yes-here.online/api/getData?page=${pageNumber}&country=${formData[0].value}&city=${formData[1].value}&town=${formData[2].value}&locality=${formData[3].value}&sector=${formData[4].value}`
       )
       .then((res) => {
         dispatch({ type: "UPDATE_DATA", payload: res.data.data });
@@ -52,15 +64,16 @@ const JobSearchOptions = () => {
   };
 
   const getDataWithText = () => {
-    if (sector == "" && city == "") return;
+    if (search == "") return;
+
+    setDisableForMenu(true);
+    setDisableForTxt(false);
 
     dispatch({ type: "UPDATE_LOADING", payload: true });
 
     axios.defaults.withCredentials = true;
     axios
-      .get(
-        `https://yes-here.online/api/getDataWithText?sector=${sector}&city=${city}`
-      )
+      .get(`https://yes-here.online/api/getDataWithText?search=${search}`)
       .then((res) => {
         dispatch({ type: "UPDATE_DATA", payload: res.data.data });
         dispatch({ type: "UPDATE_LINKS", payload: res.data });
@@ -73,20 +86,32 @@ const JobSearchOptions = () => {
 
   // get childrens when changing parent option
   function handleChange(type, value) {
+    setDisableForMenu(false);
+    setDisableForTxt(true);
+
+    let formData = $("#filterForm").serializeArray();
+
     switch (type) {
       case "country":
-        setCities(null);
+        setCity(null);
         setTown(null);
-        setSectorOne(null);
-        setSectorTwo(null);
+        setLocality(null);
+        setSector(null);
         break;
 
       case "city":
         setTown(null);
-        if (value != "") {
-          setSectorOne(null);
-          setSectorTwo(null);
-        }
+        setLocality(null);
+        setSector(null);
+        break;
+
+      case "town":
+        setLocality(null);
+        setSector(null);
+        break;
+
+      case "locality":
+        setSector(null);
         break;
 
       default:
@@ -96,19 +121,25 @@ const JobSearchOptions = () => {
     if (value != "") {
       axios.defaults.withCredentials = true;
       axios
-        .get(`https://yes-here.online/api/getSearchOptions/${type}/${value}`)
+        .get(
+          `https://yes-here.online/api/getSearchOptions?type=${type}&country=${formData[0].value}&city=${formData[1].value}&town=${formData[2].value}&locality=${formData[3].value}`
+        )
         .then((res) => {
           switch (type) {
             case "country":
-              setCities(res.data.data);
-              setSectorOne(res.data.sectorOne);
-              setSectorTwo(res.data.sectorTwo);
+              setCity(res.data);
               break;
 
             case "city":
-              setTown(res.data.data);
-              setSectorOne(res.data.sectorOne);
-              setSectorTwo(res.data.sectorTwo);
+              setTown(res.data);
+              break;
+
+            case "town":
+              setLocality(res.data);
+              break;
+
+            case "locality":
+              setSector(res.data);
               break;
 
             default:
@@ -120,14 +151,14 @@ const JobSearchOptions = () => {
           console.log(err);
         });
     }
-    // getDatawithCurrentOption();
   }
+
   return (
     <>
       <div className="job-list-header">
-        {/* <Form action="#" id="textFilter">
+        <Form action="#" id="textFilter">
           <Row className="g-2">
-            <Col lg={4} md={6}>
+            <Col lg={8} md={6}>
               <div className="filler-job-form">
                 <i className="uil uil-briefcase-alt"></i>
                 <Input
@@ -136,38 +167,22 @@ const JobSearchOptions = () => {
                   id="exampleFormControlInput1"
                   name="sector"
                   onChange={(e) => {
-                    setSector(e.target.value);
+                    setSearch(e.target.value);
                   }}
-                  placeholder="Tailor, Doctor..."
                 />
               </div>
             </Col>{" "}
             <Col lg={4} md={6}>
-              <div className="filler-job-form">
-                <i className="uil uil-briefcase-alt"></i>
-                <Input
-                  type="search"
-                  className="form-control filter-job-input-box-option"
-                  id="exampleFormControlInput1"
-                  name="city"
-                  onChange={(e) => {
-                    setCity(e.target.value);
-                  }}
-                  placeholder="City, Locality..."
-                />
-              </div>
-            </Col>
-            <Col lg={4} md={6}>
-              <div
-                to="#"
+              <li
+                disabled={disableForTxt}
                 onClick={() => getDataWithText()}
                 className="btn btn-info w-100"
               >
                 <i className="uil uil-search"></i> Search
-              </div>
+              </li>
             </Col>
           </Row>
-        </Form> */}
+        </Form>
         <form action="#" id="filterForm">
           <Row className="g-2">
             <Col lg={4} md={6}>
@@ -186,8 +201,8 @@ const JobSearchOptions = () => {
                   <option value="">...</option>
                   {countries
                     ? countries.map((country, key) => (
-                        <option key={key} value={country["location_country"]}>
-                          {country["location_country"]}
+                        <option key={key} value={country["location"]}>
+                          {country["location"]}
                         </option>
                       ))
                     : "Loading..."}
@@ -209,8 +224,8 @@ const JobSearchOptions = () => {
                 >
                   <option value="">...</option>
 
-                  {cities
-                    ? cities.map((city, key) => (
+                  {city
+                    ? city.map((city, key) => (
                         <option key={key} value={city.region}>
                           {city.region}
                         </option>
@@ -230,12 +245,13 @@ const JobSearchOptions = () => {
                   name="town"
                   id="town"
                   aria-label="Default select example"
+                  onChange={(e) => handleChange("town", e.target.value)}
                 >
                   <option value="">...</option>
                   {town
                     ? town.map((town, key) => (
-                        <option key={key} value={town.locality}>
-                          {town.locality}
+                        <option key={key} value={town.metro}>
+                          {town.metro}
                         </option>
                       ))
                     : "Loading..."}
@@ -247,22 +263,22 @@ const JobSearchOptions = () => {
           <Row className="g-2">
             <Col lg={4} md={6}>
               <div className="filler-job-form">
-                <label htmlFor="sectorOne" className="form-label">
-                  Sector 1
+                <label htmlFor="locality" className="form-label">
+                  Locality
                 </label>
                 <select
                   className="form-select form-select-option"
                   data-trigger
-                  name="sectorOne"
-                  id="sectorOne"
+                  name="locality"
+                  id="locality"
                   aria-label="Default select example"
-                  onChange={(e) => handleChange("sectorOne", e.target.value)}
+                  onChange={(e) => handleChange("locality", e.target.value)}
                 >
                   <option value="">...</option>
-                  {sectorOne
-                    ? sectorOne.map((sector, key) => (
-                        <option key={key} value={sector.industry}>
-                          {sector.industry}
+                  {locality
+                    ? locality.map((elem, key) => (
+                        <option key={key} value={elem.locality}>
+                          {elem.locality}
                         </option>
                       ))
                     : ""}
@@ -271,21 +287,24 @@ const JobSearchOptions = () => {
             </Col>
             <Col lg={4} md={6}>
               <div className="filler-job-form">
-                <label htmlFor="sectorTwo" className="form-label">
-                  Sector 2
+                <label htmlFor="sector" className="form-label">
+                  Sector
                 </label>
                 <select
                   className="form-select form-select-option"
                   data-trigger
-                  name="sectorTwo"
-                  id="sectorTwo"
+                  name="sector"
+                  id="sector"
                   aria-label="Default select example"
                 >
                   <option value="">...</option>
-                  {sectorTwo
-                    ? sectorTwo.map((sector, key) => (
-                        <option key={key} value={sector.industry_two}>
-                          {sector.industry_two}
+                  {sector
+                    ? sector.map((elem, key) => (
+                        <option
+                          key={key}
+                          value={elem.industry + "-" + elem.industry_two}
+                        >
+                          {sectorFilter(elem)}
                         </option>
                       ))
                     : "Loading..."}
@@ -294,13 +313,13 @@ const JobSearchOptions = () => {
             </Col>
             <Col lg={4} md={6}>
               <label className="form-label">{"."} </label>
-              <div
+              <li
+                disabled={disableForMenu}
                 onClick={() => getDatawithCurrentOption()}
-                to="#"
-                className="btn btn-primary w-100"
+                className="btn btn-primary w-100 filterBtn"
               >
                 <i className="uil uil-filter"></i> Fliter
-              </div>
+              </li>
             </Col>
           </Row>
         </form>
