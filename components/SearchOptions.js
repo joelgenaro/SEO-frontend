@@ -66,6 +66,10 @@ const JobSearchOptions = () => {
   const getDataWithText = () => {
     if (search == "") return;
 
+    setCity(null);
+    setTown(null);
+    setLocality(null);
+    setSector(null);
     setDisableForMenu(true);
     setDisableForTxt(false);
 
@@ -86,6 +90,7 @@ const JobSearchOptions = () => {
 
   // get childrens when changing parent option
   function handleChange(type, value) {
+    setSearch("");
     setDisableForMenu(false);
     setDisableForTxt(true);
 
@@ -127,19 +132,22 @@ const JobSearchOptions = () => {
         .then((res) => {
           switch (type) {
             case "country":
-              setCity(res.data);
+              setCity(res.data.main);
+              setSector(res.data.sector);
               break;
 
             case "city":
-              setTown(res.data);
+              setTown(res.data.main);
+              setSector(res.data.sector);
               break;
 
             case "town":
-              setLocality(res.data);
+              setLocality(res.data.main);
+              setSector(res.data.sector);
               break;
 
             case "locality":
-              setSector(res.data);
+              setSector(res.data.sector);
               break;
 
             default:
