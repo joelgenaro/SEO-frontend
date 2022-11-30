@@ -5,18 +5,6 @@ import axios from "axios";
 import $ from "jquery";
 import { useDispatch, useSelector } from "react-redux";
 
-function sectorFilter(elem) {
-  if (elem.industry == null && elem.industry_two == null) {
-    return "";
-  } else if (elem.industry == null) {
-    return elem.industry_two;
-  } else if (elem.industry_two == null) {
-    return elem.industry;
-  } else {
-    return elem.industry + " - " + elem.industry_two;
-  }
-}
-
 const JobSearchOptions = () => {
   //Use for all the dispatch actions
   const dispatch = useDispatch();
@@ -27,7 +15,8 @@ const JobSearchOptions = () => {
   const [city, setCity] = useState(null);
   const [town, setTown] = useState(null);
   const [locality, setLocality] = useState(null);
-  const [sector, setSector] = useState(null);
+  const [sectorOne, setSectorOne] = useState(null);
+  const [sectorTwo, setSectorTwo] = useState(null);
   const [search, setSearch] = useState("");
   const [disableForMenu, setDisableForMenu] = useState(false);
   const [disableForTxt, setDisableForTxt] = useState(false);
@@ -51,7 +40,7 @@ const JobSearchOptions = () => {
     axios.defaults.withCredentials = true;
     axios
       .get(
-        `https://yes-here.online/api/getData?page=${pageNumber}&country=${formData[0].value}&city=${formData[1].value}&town=${formData[2].value}&locality=${formData[3].value}&sector=${formData[4].value}`
+        `https://yes-here.online/api/getData?page=${pageNumber}&country=${formData[0].value}&city=${formData[1].value}&town=${formData[2].value}&locality=${formData[3].value}&sectorOne=${formData[4].value}&sectorTwo=${formData[5].value}`
       )
       .then((res) => {
         dispatch({ type: "UPDATE_DATA", payload: res.data.data });
@@ -65,11 +54,11 @@ const JobSearchOptions = () => {
 
   const getDataWithText = () => {
     if (search == "") return;
-
     setCity(null);
     setTown(null);
     setLocality(null);
-    setSector(null);
+    setSectorOne(null);
+    setSectorTwo(null);
     setDisableForMenu(true);
     setDisableForTxt(false);
 
@@ -101,22 +90,30 @@ const JobSearchOptions = () => {
         setCity(null);
         setTown(null);
         setLocality(null);
-        setSector(null);
+        setSectorOne(null);
+        setSectorTwo(null);
         break;
 
       case "city":
         setTown(null);
         setLocality(null);
-        setSector(null);
+        setSectorOne(null);
+        setSectorTwo(null);
         break;
 
       case "town":
         setLocality(null);
-        setSector(null);
+        setSectorOne(null);
+        setSectorTwo(null);
         break;
 
       case "locality":
-        setSector(null);
+        setSectorOne(null);
+        setSectorTwo(null);
+        break;
+
+      case "sectorOne":
+        setSectorTwo(null);
         break;
 
       default:
@@ -127,27 +124,31 @@ const JobSearchOptions = () => {
       axios.defaults.withCredentials = true;
       axios
         .get(
-          `https://yes-here.online/api/getSearchOptions?type=${type}&country=${formData[0].value}&city=${formData[1].value}&town=${formData[2].value}&locality=${formData[3].value}`
+          `https://yes-here.online/api/getSearchOptions?type=${type}&country=${formData[0].value}&city=${formData[1].value}&town=${formData[2].value}&locality=${formData[3].value}&sectorOne=${formData[4].value}`
         )
         .then((res) => {
           switch (type) {
             case "country":
               setCity(res.data.main);
-              setSector(res.data.sector);
+              setSectorOne(res.data.sectorOne);
               break;
 
             case "city":
               setTown(res.data.main);
-              setSector(res.data.sector);
+              setSectorOne(res.data.sectorOne);
               break;
 
             case "town":
               setLocality(res.data.main);
-              setSector(res.data.sector);
+              setSectorOne(res.data.sectorOne);
               break;
 
             case "locality":
-              setSector(res.data.sector);
+              setSectorOne(res.data.sectorOne);
+              break;
+
+            case "sectorOne":
+              setSectorTwo(res.data.main);
               break;
 
             default:
@@ -292,30 +293,51 @@ const JobSearchOptions = () => {
                     : ""}
                 </select>
               </div>
-            </Col>
+            </Col>{" "}
             <Col lg={4} md={6}>
               <div className="filler-job-form">
-                <label htmlFor="sector" className="form-label">
-                  Sector
+                <label htmlFor="sectorOne" className="form-label">
+                  Main Sector
                 </label>
                 <select
                   className="form-select form-select-option"
                   data-trigger
-                  name="sector"
-                  id="sector"
+                  name="sectorOne"
+                  id="sectorOne"
+                  aria-label="Default select example"
+                  onChange={(e) => handleChange("sectorOne", e.target.value)}
+                >
+                  <option value="">...</option>
+                  {sectorOne
+                    ? sectorOne.map((elem, key) => (
+                        <option key={key} value={elem.industry}>
+                          {elem.industry}
+                        </option>
+                      ))
+                    : ""}
+                </select>
+              </div>
+            </Col>{" "}
+            <Col lg={4} md={6}>
+              <div className="filler-job-form">
+                <label htmlFor="sectorTwo" className="form-label">
+                  SubSector
+                </label>
+                <select
+                  className="form-select form-select-option"
+                  data-trigger
+                  name="sectorTwo"
+                  id="sectorTwo"
                   aria-label="Default select example"
                 >
                   <option value="">...</option>
-                  {sector
-                    ? sector.map((elem, key) => (
-                        <option
-                          key={key}
-                          value={elem.industry + "-" + elem.industry_two}
-                        >
-                          {sectorFilter(elem)}
+                  {sectorTwo
+                    ? sectorTwo.map((elem, key) => (
+                        <option key={key} value={elem.industry_two}>
+                          {elem.industry_two}
                         </option>
                       ))
-                    : "Loading..."}
+                    : ""}
                 </select>
               </div>
             </Col>
