@@ -36,7 +36,7 @@ const JobVacancyList = () => {
                     <div className="mb-2 mb-md-0">
                       <h5 className="fs-18 mb-0">
                         <Link href="/jobdetails" className="text-dark">
-                          {"location: " + company["location"]}
+                          {"location_country: " + company["location_country"]}
                         </Link>
                       </h5>
                       <p className="text-muted fs-14 mb-0">

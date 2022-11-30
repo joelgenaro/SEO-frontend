@@ -210,8 +210,8 @@ const JobSearchOptions = () => {
                   <option value="">...</option>
                   {countries
                     ? countries.map((country, key) => (
-                        <option key={key} value={country["location"]}>
-                          {country["location"]}
+                        <option key={key} value={country["location_country"]}>
+                          {country["location_country"]}
                         </option>
                       ))
                     : "Loading..."}
