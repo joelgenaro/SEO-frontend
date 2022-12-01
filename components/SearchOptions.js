@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, memo } from "react";
 import { Col, Form } from "react-bootstrap";
 import { Input, Row } from "reactstrap";
 import axios from "axios";
@@ -35,6 +35,10 @@ const JobSearchOptions = () => {
     dispatch({ type: "UPDATE_LOADING", payload: true });
     dispatch({ type: "UPDATE_API_ROUTE", payload: "getData" });
 
+    setSearch("");
+    setDisableForMenu(false);
+    setDisableForTxt(true);
+
     let formData = $("#filterForm").serializeArray();
 
     axios.defaults.withCredentials = true;
@@ -66,8 +70,11 @@ const JobSearchOptions = () => {
 
     axios.defaults.withCredentials = true;
     axios
-      .get(`https://yes-here.online/api/getDataWithText?search=${search}`)
+      .get(
+        `https://yes-here.online/api/getDataWithText?page=${pageNumber}&search=${search}`
+      )
       .then((res) => {
+        console.log(res.data);
         dispatch({ type: "UPDATE_DATA", payload: res.data.data });
         dispatch({ type: "UPDATE_LINKS", payload: res.data });
         dispatch({ type: "UPDATE_LOADING", payload: false });
@@ -79,10 +86,6 @@ const JobSearchOptions = () => {
 
   // get childrens when changing parent option
   function handleChange(type, value) {
-    setSearch("");
-    setDisableForMenu(false);
-    setDisableForTxt(true);
-
     let formData = $("#filterForm").serializeArray();
 
     switch (type) {
@@ -175,6 +178,7 @@ const JobSearchOptions = () => {
                   className="form-control filter-job-input-box-option"
                   id="exampleFormControlInput1"
                   name="sector"
+                  value={search}
                   onChange={(e) => {
                     setSearch(e.target.value);
                   }}
@@ -358,4 +362,4 @@ const JobSearchOptions = () => {
   );
 };
 
-export default JobSearchOptions;
+export default memo(JobSearchOptions);

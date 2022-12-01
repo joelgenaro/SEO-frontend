@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, memo } from "react";
 import Link from "next/link";
 import { Col, Row } from "reactstrap";
 import Pagination from "react-js-pagination";
@@ -50,4 +50,4 @@ const PaginationWithProgrees = () => {
   );
 };
 
-export default PaginationWithProgrees;
+export default memo(PaginationWithProgrees);

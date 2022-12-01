@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, memo } from "react";
 import Link from "next/link";
 import { Col, Input, Label, Row } from "reactstrap";
 import { useSelector } from "react-redux";
@@ -7,7 +7,6 @@ import CompanyModal from "./CompanyModal";
 const JobVacancyList = () => {
   //Apply Now Model
   const data = useSelector((state) => state.currentAuth.data);
-
   const [modal, setModal] = useState(false);
   const [companyID, setCompanyID] = useState(null);
 
@@ -112,4 +111,4 @@ const JobVacancyList = () => {
   );
 };
 
-export default JobVacancyList;
+export default memo(JobVacancyList);
