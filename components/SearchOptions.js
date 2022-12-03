@@ -86,7 +86,7 @@ const JobSearchOptions = () => {
       });
   };
 
-  // get childrens when changing parent option
+  // get childrens when changing parent option gg
   function handleChange(type, value) {
     let formData = $("#filterForm").serializeArray();
 
