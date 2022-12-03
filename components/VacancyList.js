@@ -20,6 +20,7 @@ const JobVacancyList = () => {
       <div>
         {data ? (
           data.map((company, key) => (
+            return this.props.schema.collectionName.length < 0 ?
             <div key={key} className={"job-box card mt-4"}>
               <div className="p-4">
                 <Row className="align-items-center">
@@ -97,7 +98,7 @@ const JobVacancyList = () => {
                   </Col>
                 </Row>
               </div>
-            </div>
+            </div> : 
           ))
         ) : (
           <div className="spinner-border text-primary m-1" role="status"></div>

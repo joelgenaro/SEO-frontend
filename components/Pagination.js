@@ -17,7 +17,7 @@ const PaginationWithProgrees = () => {
       dispatch({ type: "UPDATE_LOADING", payload: true });
 
       const api = await fetch(
-        `https://yes-here.online/api/index?page=${pageNumber}`
+        `http://localhost:8000/api/index?page=${pageNumber}`
       );
       const res = await api.json();
 
