@@ -17,7 +17,8 @@ const JobSearchOptions = () => {
   const [locality, setLocality] = useState(null);
   const [sectorOne, setSectorOne] = useState(null);
   const [sectorTwo, setSectorTwo] = useState(null);
-  const [search, setSearch] = useState("");
+  const [sectorSearch, setSectorSearch] = useState("");
+  const [countrySearch, setCountrySearch] = useState("");
   const [disableForMenu, setDisableForMenu] = useState(false);
   const [disableForTxt, setDisableForTxt] = useState(false);
 
@@ -35,7 +36,8 @@ const JobSearchOptions = () => {
     dispatch({ type: "UPDATE_LOADING", payload: true });
     dispatch({ type: "UPDATE_API_ROUTE", payload: "getData" });
 
-    setSearch("");
+    setSectorSearch("");
+    setCountrySearch("");
     setDisableForMenu(false);
     setDisableForTxt(true);
 
@@ -57,7 +59,8 @@ const JobSearchOptions = () => {
   };
 
   const getDataWithText = () => {
-    if (search == "") return;
+    if (sectorSearch == "" && countrySearch == "") return;
+
     setCity(null);
     setTown(null);
     setLocality(null);
@@ -71,7 +74,7 @@ const JobSearchOptions = () => {
     axios.defaults.withCredentials = true;
     axios
       .get(
-        `https://yes-here.online/api/getDataWithText?page=${pageNumber}&search=${search}`
+        `https://yes-here.online/api/getDataWithText?page=${pageNumber}&sector=${sectorSearch}&country=${countrySearch}`
       )
       .then((res) => {
         dispatch({ type: "UPDATE_DATA", payload: res.data.data });
@@ -169,17 +172,32 @@ const JobSearchOptions = () => {
       <div className="job-list-header">
         <Form action="#" id="textFilter">
           <Row className="g-2">
-            <Col lg={8} md={6}>
+            <Col lg={4} md={6}>
               <div className="filler-job-form">
                 <i className="uil uil-briefcase-alt"></i>
                 <Input
                   type="search"
                   className="form-control filter-job-input-box-option"
                   id="exampleFormControlInput1"
-                  name="sector"
-                  value={search}
+                  placeholder="Sector..."
+                  value={sectorSearch}
                   onChange={(e) => {
-                    setSearch(e.target.value);
+                    setSectorSearch(e.target.value);
+                  }}
+                />
+              </div>
+            </Col>{" "}
+            <Col lg={4} md={6}>
+              <div className="filler-job-form">
+                <i className="uil uil-briefcase-alt"></i>
+                <Input
+                  type="search"
+                  className="form-control filter-job-input-box-option"
+                  id="exampleFormControlInput1"
+                  placeholder="Country, City, Town..."
+                  value={countrySearch}
+                  onChange={(e) => {
+                    setCountrySearch(e.target.value);
                   }}
                 />
               </div>
