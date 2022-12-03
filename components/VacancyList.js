@@ -10,6 +10,14 @@ const JobVacancyList = () => {
   const [modal, setModal] = useState(false);
   const [companyID, setCompanyID] = useState(null);
 
+  let newData = [];
+
+  newData = data
+    ? data.filter(function (el) {
+        return el.industry != null || el["industry_two"] != null;
+      })
+    : [];
+
   const openModal = (e) => {
     setCompanyID(e.target.id);
     setModal(!modal);
@@ -18,8 +26,8 @@ const JobVacancyList = () => {
   return (
     <>
       <div>
-        {data ? (
-          data.map((company, key) => (
+        {newData ? (
+          newData.map((company, key) => (
             <div key={key} className={"job-box card mt-4"}>
               <div className="p-4">
                 <Row className="align-items-center">
