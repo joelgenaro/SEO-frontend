@@ -8,7 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 
 const App = ({}) => {
-  //Use for all the dispatch actions gg
+  //Use for all the dispatch actions
   const dispatch = useDispatch();
   const loading = useSelector((state) => state.currentAuth.loading);
 
