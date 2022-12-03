@@ -25,27 +25,29 @@ const JobVacancyList = () => {
                 <Row className="align-items-center">
                   <Col md={2}>
                     <div className="text-center mb-4 mb-md-0">
-                      <Link href="/companydetails">
-                        {"Company Name: " + company["full_name"]}
-                      </Link>
+                      <p>{"Company Name: " + company["full_name"]}</p>
                     </div>
                   </Col>
 
                   <Col md={3}>
                     <div className="mb-2 mb-md-0">
                       <h5 className="fs-18 mb-0">
-                        <Link href="/jobdetails" className="text-dark">
+                        <p className="text-dark">
                           {"location_country: " + company["location_country"]}
-                        </Link>
+                        </p>
                       </h5>
                       <p className="text-muted fs-14 mb-0">
                         {"locality: " + company["locality"]}
                       </p>
                       <p className="text-muted fs-14 mb-0">
-                        {"sector: " + company["industry"]}
+                        sector:{" "}
+                        {company["industry"] == null ? "" : company["industry"]}
                       </p>
                       <p className="text-muted fs-14 mb-0">
-                        {"sector_2: " + company["industry_two"]}
+                        sector2:{" "}
+                        {company["industry_two"] == null
+                          ? ""
+                          : company["industry_two"]}
                       </p>
                     </div>
                   </Col>

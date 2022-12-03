@@ -74,7 +74,6 @@ const JobSearchOptions = () => {
         `https://yes-here.online/api/getDataWithText?page=${pageNumber}&search=${search}`
       )
       .then((res) => {
-        console.log(res.data);
         dispatch({ type: "UPDATE_DATA", payload: res.data.data });
         dispatch({ type: "UPDATE_LINKS", payload: res.data });
         dispatch({ type: "UPDATE_LOADING", payload: false });
