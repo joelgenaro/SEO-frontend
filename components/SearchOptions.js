@@ -60,7 +60,7 @@ const JobSearchOptions = () => {
   };
 
   const getDataWithText = () => {
-    console.log("text");
+    console.log("text=");
     if (sectorSearch == "" && countrySearch == "") return;
 
     setCity(null);
