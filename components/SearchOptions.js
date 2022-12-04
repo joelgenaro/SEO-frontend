@@ -33,7 +33,6 @@ const JobSearchOptions = () => {
   }, [pageNumber]);
 
   const getDatawithCurrentOption = async () => {
-    console.log("menu");
     dispatch({ type: "UPDATE_LOADING", payload: true });
     dispatch({ type: "UPDATE_API_ROUTE", payload: "getData" });
 
@@ -60,7 +59,6 @@ const JobSearchOptions = () => {
   };
 
   const getDataWithText = () => {
-    console.log("text=");
     if (sectorSearch == "" && countrySearch == "") return;
 
     setCity(null);
