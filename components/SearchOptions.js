@@ -25,10 +25,6 @@ const JobSearchOptions = () => {
   const isFirstRun = useRef(true);
 
   useEffect(() => {
-    if (isFirstRun.current && pageNumber == 1) {
-      isFirstRun.current = false;
-      return;
-    }
     disableForMenu == false ? getDatawithCurrentOption() : getDataWithText();
   }, [pageNumber]);
 
