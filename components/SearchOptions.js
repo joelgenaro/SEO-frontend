@@ -191,7 +191,7 @@ const JobSearchOptions = () => {
                   type="search"
                   className="form-control filter-job-input-box-option"
                   id="exampleFormControlInput1"
-                  placeholder="Country..."
+                  placeholder="Country,City,Town,Locality,Full Name,Company Name..."
                   value={countrySearch}
                   onChange={(e) => {
                     setCountrySearch(e.target.value);

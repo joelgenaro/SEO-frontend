@@ -25,7 +25,10 @@ const JobVacancyList = () => {
                 <Row className="align-items-center">
                   <Col md={2}>
                     <div className="text-center mb-4 mb-md-0">
-                      <p>{"Company Name: " + company["full_name"]}</p>
+                      <p>{"Full Name: " + company["full_name"]}</p>
+                    </div>
+                    <div className="text-center mb-4 mb-md-0">
+                      <p>{"Company Name: " + company["Company_Name"]}</p>
                     </div>
                   </Col>
 
