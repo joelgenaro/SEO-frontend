@@ -28,7 +28,7 @@ const JobVacancyList = () => {
                       <p>{"Full Name: " + company["full_name"]}</p>
                     </div>
                     <div className="text-center mb-4 mb-md-0">
-                      <p>{"Company Name: " + company["Company_Name"]}</p>
+                      <p>{"Company Name: " + company["company_name"]}</p>
                     </div>
                   </Col>
 
