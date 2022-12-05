@@ -29,7 +29,6 @@ const JobSearchOptions = () => {
   }, [pageNumber]);
 
   const getDatawithCurrentOption = async () => {
-    console.log("menu");
     dispatch({ type: "UPDATE_LOADING", payload: true });
     dispatch({ type: "UPDATE_API_ROUTE", payload: "getData" });
 
@@ -55,9 +54,15 @@ const JobSearchOptions = () => {
       });
   };
 
+  const handleKeyDown = (event) => {
+    if (event.key === "Enter") {
+      getDataWithText();
+    }
+  };
+
   const getDataWithText = () => {
     if (sectorSearch == "" && countrySearch == "") return;
-    console.log("text");
+
     setCity(null);
     setTown(null);
     setLocality(null);
@@ -178,6 +183,7 @@ const JobSearchOptions = () => {
                   id="exampleFormControlInput1"
                   placeholder="Sector..."
                   value={sectorSearch}
+                  onKeyDown={handleKeyDown}
                   onChange={(e) => {
                     setSectorSearch(e.target.value);
                   }}
@@ -193,6 +199,7 @@ const JobSearchOptions = () => {
                   id="exampleFormControlInput1"
                   placeholder="Country,City,Town,Locality,Full Name,Company Name..."
                   value={countrySearch}
+                  onKeyDown={handleKeyDown}
                   onChange={(e) => {
                     setCountrySearch(e.target.value);
                   }}
