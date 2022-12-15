@@ -1,33 +1,56 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { Col, Container, Row } from "reactstrap";
 
 const Section = () => {
+  const [isMenu, setIsMenu] = useState(false);
+
+  useEffect(() => {
+    // Close the dropdown menu if the user clicks outside of it
+    window.onclick = function (e) {
+      if (e.target.className != "dropDownIcon") {
+        setIsMenu(false);
+      }
+    };
+  }, []);
+
+  const dropDown = () => {
+    setIsMenu(true);
+  };
+
   return (
     <>
-      <section className="page-title-box">
+      <section className="pageHeader">
         <Container className="container">
           <Row className="justify-content-center">
             <Col md={6}>
               <div className="text-center text-white">
-                <h1 className="mb-4">8 Million Company Directory</h1>
+                {/* <h1 className="mb-4">8 Million Company Directory</h1> */}
                 <div className="page-next"></div>
               </div>
             </Col>
           </Row>
         </Container>
-      </section>
-      <div className="position-relative" style={{ zIndex: 1 }}>
-        <div className="shape">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 250">
-            <path
-              fill="#FFFFFF"
-              fillOpacity="1"
-              d="M0,192L120,202.7C240,213,480,235,720,234.7C960,235,1200,213,1320,202.7L1440,192L1440,320L1320,320C1200,320,960,320,720,320C480,320,240,320,120,320L0,320Z"
-            ></path>
-          </svg>
+
+        <div className="dropdownMenu">
+          <button onClick={dropDown} name="dropbtn" className="dropbtn">
+            <span className="dropDownIcon">&#9776;</span>
+          </button>
+          {isMenu ? (
+            <div id="myDropdown" className="dropdown-content show">
+              <a href="#">ABOUT US</a>
+              <a href="#">CONTACT</a>
+              <a href="#">PRIVACY POLICY</a>
+              <a href="#">SITE MAP</a>
+            </div>
+          ) : (
+            ""
+          )}
         </div>
-      </div>
+        <div className="pCompanyLogo">
+          <img className="companyLogo" src="./vercel.svg" />
+        </div>
+      </section>
     </>
   );
 };

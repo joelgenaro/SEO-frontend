@@ -3,6 +3,7 @@ import Link from "next/link";
 import { Col, Input, Label, Row } from "reactstrap";
 import { useSelector } from "react-redux";
 import CompanyModal from "./CompanyModal";
+import Map from "./Map";
 
 const JobVacancyList = () => {
   //Apply Now Model
@@ -18,84 +19,89 @@ const JobVacancyList = () => {
   return (
     <>
       <div>
+        <Map companies={data} />
+      </div>
+      <div>
         {data ? (
           data.map((company, key) => (
             <div key={key} className={"job-box card mt-4"}>
               <div className="p-4">
-                <Row className="align-items-center">
-                  <Col md={2}>
-                    <div className="text-center mb-4 mb-md-0">
-                      <p>{"Full Name: " + company["full_name"]}</p>
-                    </div>
-                    <div className="text-center mb-4 mb-md-0">
-                      <p>{"Company Name: " + company["company_name"]}</p>
-                    </div>
-                  </Col>
-
-                  <Col md={3}>
-                    <div className="mb-2 mb-md-0">
-                      <h5 className="fs-18 mb-0">
-                        <p className="text-dark">
-                          {"location_country: " + company["location_country"]}
-                        </p>
+                <Row>
+                  <Col md={12} lg={6}>
+                    <div className="mb-2 mb-md-1">
+                      <h5 className="fs-18 mb-3">
+                        <Link
+                          id={company["id"]}
+                          onClick={openModal}
+                          className="companyName"
+                          href="#"
+                        >
+                          {company["company_name"]}
+                        </Link>
                       </h5>
-                      <p className="text-muted fs-14 mb-0">
-                        {"locality: " + company["locality"]}
-                      </p>
-                      <p className="text-muted fs-14 mb-0">
-                        sector:{" "}
-                        {company["industry"] == null ? "" : company["industry"]}
-                      </p>
-                      <p className="text-muted fs-14 mb-0">
-                        sector2:{" "}
-                        {company["industry_two"] == null
-                          ? ""
-                          : company["industry_two"]}
-                      </p>
                     </div>
                   </Col>
-
-                  <Col md={3}>
-                    <div className="d-flex mb-2">
-                      <div className="flex-shrink-0">
-                        <i className="mdi mdi-map-marker text-primary me-1"></i>
-                      </div>
-                      <p className="text-muted mb-0">
-                        {"region: " + company["region"]}
-                      </p>
-                    </div>
-                  </Col>
-
-                  <Col md={2}>
+                </Row>
+                <Row>
+                  <Col md={12} lg={6}>
                     <div className="d-flex mb-0">
-                      <div className="flex-shrink-0">
-                        <i className="uil uil-clock-three text-primary me-1"></i>
-                      </div>
+                      {company["company_name"] ? (
+                        <p className="text-muted mb-0">
+                          {company["full_name"]}
+                        </p>
+                      ) : (
+                        <h5 className="fs-18 mb-3">
+                          <Link
+                            id={company["id"]}
+                            onClick={openModal}
+                            className="companyName"
+                            href="#"
+                          >
+                            {company["full_name"]}
+                          </Link>
+                        </h5>
+                      )}
+                    </div>
+                  </Col>
+                </Row>
+                <Row>
+                  <Col md={12} lg={6}>
+                    <div className="d-flex mb-0">
+                      <p className="text-muted mb-0">{company["Job_title"]}</p>
+                    </div>
+                  </Col>
+                </Row>
+                <Row>
+                  <Col md={12} lg={6}>
+                    <div className="d-flex mb-0">
                       <p className="text-muted mb-0">
-                        {"metro: " + company["metro"]}
+                        {company["Company_Location_Street_Address"]}
                       </p>
                     </div>
                   </Col>
                 </Row>
-              </div>
-              <div className="p-3 bg-light">
-                <Row className="justify-content-between">
-                  <Col md={4}>
-                    <div>
+                <Row>
+                  <Col md={12} lg={6}>
+                    <div className="d-flex mb-0">
+                      <p className="text-muted mb-0">{company["industry"]}</p>
+                    </div>
+                  </Col>
+                </Row>
+                <Row>
+                  <Col md={12} lg={6}>
+                    <div className="d-flex mb-0">
                       <p className="text-muted mb-0">
-                        <span className="text-dark"> :</span>
+                        {company["industry_two"]}
                       </p>
                     </div>
                   </Col>
-                  <Col lg={2} md={3}>
-                    <div>
-                      <button
-                        id={company["id"]}
-                        onClick={openModal}
-                        className="primary-link openModalBtn"
-                      >
-                        more <i className="mdi mdi-chevron-double-right"></i>
-                      </button>
+                </Row>
+                <Row>
+                  <Col md={12} lg={6}>
+                    <div className="d-flex mb-0">
+                      <p className="text-muted mb-0">
+                        {company["Company_Location_Geo"]}
+                      </p>
                     </div>
                   </Col>
                 </Row>

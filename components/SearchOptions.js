@@ -4,6 +4,7 @@ import { Input, Row } from "reactstrap";
 import axios from "axios";
 import $ from "jquery";
 import { useDispatch, useSelector } from "react-redux";
+import Select from "react-select";
 
 const JobSearchOptions = () => {
   //Use for all the dispatch actions
@@ -28,6 +29,7 @@ const JobSearchOptions = () => {
     disableForMenu == false ? getDatawithCurrentOption() : getDataWithText();
   }, [pageNumber]);
 
+  // Search with Drop Down Menu
   const getDatawithCurrentOption = async () => {
     dispatch({ type: "UPDATE_LOADING", payload: true });
     dispatch({ type: "UPDATE_API_ROUTE", payload: "getData" });
@@ -60,6 +62,7 @@ const JobSearchOptions = () => {
     }
   };
 
+  // Search with Text
   const getDataWithText = () => {
     if (sectorSearch == "" && countrySearch == "") return;
 
@@ -181,7 +184,7 @@ const JobSearchOptions = () => {
                   type="search"
                   className="form-control filter-job-input-box-option"
                   id="exampleFormControlInput1"
-                  placeholder="Sector..."
+                  placeholder="tailor, doctor..."
                   value={sectorSearch}
                   onKeyDown={handleKeyDown}
                   onChange={(e) => {
@@ -190,14 +193,14 @@ const JobSearchOptions = () => {
                 />
               </div>
             </Col>{" "}
-            <Col lg={4} md={6}>
+            <Col lg={6} md={6}>
               <div className="filler-job-form">
                 <i className="uil uil-briefcase-alt"></i>
                 <Input
                   type="search"
                   className="form-control filter-job-input-box-option"
                   id="exampleFormControlInput1"
-                  placeholder="Country,City,Town,Locality,Full Name,Company Name..."
+                  placeholder="City, Locality..."
                   value={countrySearch}
                   onKeyDown={handleKeyDown}
                   onChange={(e) => {
@@ -206,7 +209,7 @@ const JobSearchOptions = () => {
                 />
               </div>
             </Col>{" "}
-            <Col lg={4} md={6}>
+            <Col lg={2} md={6}>
               <li
                 disabled={disableForTxt}
                 onClick={() => getDataWithText()}
@@ -219,7 +222,7 @@ const JobSearchOptions = () => {
         </Form>
         <form action="#" id="filterForm">
           <Row className="g-2">
-            <Col lg={4} md={6}>
+            <Col lg={3} md={6}>
               <div className="filler-job-form">
                 <label htmlFor="country" className="form-label">
                   Country
@@ -243,7 +246,7 @@ const JobSearchOptions = () => {
                 </select>
               </div>
             </Col>
-            <Col lg={4} md={6}>
+            <Col lg={3} md={6}>
               <div className="filler-job-form">
                 <label htmlFor="city" className="form-label">
                   City
@@ -268,7 +271,7 @@ const JobSearchOptions = () => {
                 </select>
               </div>
             </Col>
-            <Col lg={4} md={6}>
+            <Col lg={3} md={6}>
               <div className="filler-job-form">
                 <label htmlFor="town" className="form-label">
                   Town
@@ -292,10 +295,7 @@ const JobSearchOptions = () => {
                 </select>
               </div>
             </Col>
-          </Row>
-
-          <Row className="g-2">
-            <Col lg={4} md={6}>
+            <Col lg={3} md={6}>
               <div className="filler-job-form">
                 <label htmlFor="locality" className="form-label">
                   Locality
@@ -319,7 +319,10 @@ const JobSearchOptions = () => {
                 </select>
               </div>
             </Col>{" "}
-            <Col lg={4} md={6}>
+          </Row>
+
+          <Row className="g-2">
+            <Col lg={5} md={6}>
               <div className="filler-job-form">
                 <label htmlFor="sectorOne" className="form-label">
                   Main Sector
@@ -343,10 +346,10 @@ const JobSearchOptions = () => {
                 </select>
               </div>
             </Col>{" "}
-            <Col lg={4} md={6}>
+            <Col lg={5} md={6}>
               <div className="filler-job-form">
                 <label htmlFor="sectorTwo" className="form-label">
-                  SubSector
+                  Sub Sector
                 </label>
                 <select
                   className="form-select form-select-option"
@@ -366,7 +369,7 @@ const JobSearchOptions = () => {
                 </select>
               </div>
             </Col>
-            <Col lg={4} md={6}>
+            <Col lg={2} md={6}>
               <label className="form-label">{"."} </label>
               <li
                 disabled={disableForMenu}

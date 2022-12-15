@@ -198,3 +198,99 @@ a {
 .companyDetailsUL {
   column-count: 2;
 }
+
+/* Dropdown Button */
+.dropbtn {
+  background-color: transparent;
+  color: white;
+  padding: 16px;
+  font-size: 16px;
+  border: none;
+  cursor: pointer;
+}
+
+/* Dropdown button on hover & focus */
+.dropbtn:hover,
+.dropbtn:focus {
+  // background-color: #2980b9;
+}
+
+.companyLogo {
+  width: 200px;
+  left: 200px;
+  top: 50px;
+  position: absolute;
+}
+/* The container <div> - needed to position the dropdown content */
+.dropdownMenu {
+  position: absolute;
+  display: inline-block;
+  right: 200px;
+  top: 50px;
+}
+
+/* Dropdown Content (Hidden by Default) */
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f1f1f1;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+  z-index: 2;
+  right: 10px;
+}
+
+/* Links inside the dropdown */
+.dropdown-content a {
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+}
+
+/* Change color of dropdown links on hover */
+.dropdown-content a:hover {
+  background-color: #ddd;
+}
+
+/* Show the dropdown menu (use JS to add this class to the .dropdown-content container when the user clicks on the dropdown button) */
+.show {
+  display: block;
+}
+
+#hmbrgr_btn {
+  font-size: 50px;
+  // cursor: pointer;
+  // z-index: 99;
+}
+.pageHeader {
+  // position: relative;
+  // background-image: url(/_next/static/media/page-title.f9f50843.png);
+  // background-size: cover;
+  // background-color: #6055f2;
+  position: relative;
+  padding-top: 225px;
+  padding-bottom: 110px;
+  background-position: center;
+}
+
+.dropDownIcon {
+  font-size: 40px;
+  color: black;
+  cursor: pointer;
+  opacity: 0.5;
+  z-index: 99;
+}
+
+.card {
+  width: 70%;
+}
+.companyName {
+  text-decoration: underline;
+}
+
+@media (max-width: 768px) {
+  .card {
+    width: 100%;
+  }
+}
