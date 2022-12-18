@@ -192,6 +192,11 @@ a {
   display: flex;
   flex-direction: column;
 }
+.headerDiv {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
 .openModalBtn {
   border: aliceblue;
 }
@@ -209,26 +214,6 @@ a {
   cursor: pointer;
 }
 
-/* Dropdown button on hover & focus */
-.dropbtn:hover,
-.dropbtn:focus {
-  // background-color: #2980b9;
-}
-
-.companyLogo {
-  width: 200px;
-  left: 200px;
-  top: 50px;
-  position: absolute;
-}
-/* The container <div> - needed to position the dropdown content */
-.dropdownMenu {
-  position: absolute;
-  display: inline-block;
-  right: 200px;
-  top: 50px;
-}
-
 /* Dropdown Content (Hidden by Default) */
 .dropdown-content {
   display: none;
@@ -237,7 +222,6 @@ a {
   min-width: 160px;
   box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
   z-index: 2;
-  right: 10px;
 }
 
 /* Links inside the dropdown */
@@ -264,13 +248,9 @@ a {
   // z-index: 99;
 }
 .pageHeader {
-  // position: relative;
-  // background-image: url(/_next/static/media/page-title.f9f50843.png);
-  // background-size: cover;
-  // background-color: #6055f2;
   position: relative;
   padding-top: 225px;
-  padding-bottom: 110px;
+  padding-bottom: 200px;
   background-position: center;
 }
 

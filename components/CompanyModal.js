@@ -1,15 +1,6 @@
-import React, { useState, useEffect, memo } from "react";
-import {
-  Col,
-  Input,
-  Label,
-  Row,
-  Modal,
-  ModalBody,
-  Card,
-  CardBody,
-} from "reactstrap";
-import { useDispatch, useSelector } from "react-redux";
+import React, { memo } from "react";
+import { Modal, ModalBody, CardBody } from "reactstrap";
+import { useSelector } from "react-redux";
 
 const CompanyModal = ({ modal, openModal, companyID }) => {
   const data = useSelector((state) => state.currentAuth.data);

@@ -26,56 +26,70 @@ const JobVacancyList = () => {
           data.map((company, key) => (
             <div key={key} className={"job-box card mt-4"}>
               <div className="p-4">
-                <Row>
-                  <Col md={12} lg={6}>
-                    <div className="mb-2 mb-md-1">
-                      <h5 className="fs-18 mb-3">
-                        <Link
-                          id={company["id"]}
-                          onClick={openModal}
-                          className="companyName"
-                          href="#"
-                        >
-                          {company["company_name"]}
-                        </Link>
-                      </h5>
-                    </div>
-                  </Col>
-                </Row>
-                <Row>
-                  <Col md={12} lg={6}>
-                    <div className="d-flex mb-0">
-                      {company["company_name"] ? (
-                        <p className="text-muted mb-0">
-                          {company["full_name"]}
-                        </p>
-                      ) : (
-                        <h5 className="fs-18 mb-3">
-                          <Link
-                            id={company["id"]}
-                            onClick={openModal}
-                            className="companyName"
-                            href="#"
-                          >
-                            {company["full_name"]}
-                          </Link>
-                        </h5>
-                      )}
-                    </div>
-                  </Col>
-                </Row>
-                <Row>
-                  <Col md={12} lg={6}>
-                    <div className="d-flex mb-0">
-                      <p className="text-muted mb-0">{company["Job_title"]}</p>
-                    </div>
-                  </Col>
-                </Row>
+                {company["company_name"] ? (
+                  <>
+                    <Row>
+                      <Col md={12} lg={6}>
+                        <div className="mb-2 mb-md-1">
+                          <h5 className="fs-18 mb-3">
+                            <Link
+                              id={company["id"]}
+                              onClick={openModal}
+                              className="companyName"
+                              href="javascript:;"
+                            >
+                              {"Company Name: " + company["company_name"]}
+                            </Link>
+                          </h5>
+                        </div>
+                      </Col>
+                    </Row>
+                    <Row>
+                      <Col md={12} lg={6}>
+                        <div className="mb-2 mb-md-1">
+                          <p className="text-muted mb-0">
+                            {"Full Name: " + company["full_name"]}
+                          </p>
+                        </div>
+                      </Col>
+                    </Row>
+                  </>
+                ) : (
+                  <>
+                    {" "}
+                    <Row>
+                      <Col md={12} lg={6}>
+                        <div className="mb-2 mb-md-1">
+                          <p className="text-muted mb-0">
+                            {"Company Name: " + company["company_name"]}
+                          </p>
+                        </div>
+                      </Col>
+                    </Row>
+                    <Row>
+                      <Col md={12} lg={6}>
+                        <div className="mb-2 mb-md-1">
+                          <h5 className="fs-18 mb-3">
+                            <Link
+                              id={company["id"]}
+                              onClick={openModal}
+                              className="companyName"
+                              href="javascript:;"
+                            >
+                              {"Full Name: " + company["full_name"]}
+                            </Link>
+                          </h5>
+                        </div>
+                      </Col>
+                    </Row>
+                  </>
+                )}
+
                 <Row>
                   <Col md={12} lg={6}>
                     <div className="d-flex mb-0">
                       <p className="text-muted mb-0">
-                        {company["Company_Location_Street_Address"]}
+                        {"Job Title: " + company["Job_title"]}
                       </p>
                     </div>
                   </Col>
@@ -83,15 +97,9 @@ const JobVacancyList = () => {
                 <Row>
                   <Col md={12} lg={6}>
                     <div className="d-flex mb-0">
-                      <p className="text-muted mb-0">{company["industry"]}</p>
-                    </div>
-                  </Col>
-                </Row>
-                <Row>
-                  <Col md={12} lg={6}>
-                    <div className="d-flex mb-0">
                       <p className="text-muted mb-0">
-                        {company["industry_two"]}
+                        {"Company_Location_Street_Address: " +
+                          company["Company_Location_Street_Address"]}
                       </p>
                     </div>
                   </Col>
@@ -100,7 +108,25 @@ const JobVacancyList = () => {
                   <Col md={12} lg={6}>
                     <div className="d-flex mb-0">
                       <p className="text-muted mb-0">
-                        {company["Company_Location_Geo"]}
+                        {"Main Sector: " + company["industry"]}
+                      </p>
+                    </div>
+                  </Col>
+                </Row>
+                <Row>
+                  <Col md={12} lg={6}>
+                    <div className="d-flex mb-0">
+                      <p className="text-muted mb-0">
+                        {"Sub Sector: " + company["industry_two"]}
+                      </p>
+                    </div>
+                  </Col>
+                </Row>
+                <Row>
+                  <Col md={12} lg={6}>
+                    <div className="d-flex mb-0">
+                      <p className="text-muted mb-0">
+                        {"Coordinate: " + company["Company_Location_Geo"]}
                       </p>
                     </div>
                   </Col>

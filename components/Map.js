@@ -54,8 +54,8 @@ const Map = ({ companies }) => {
   };
 
   return isLoaded ? (
-    <GoogleMap mapContainerStyle={containerStyle} zoom={1} onLoad={onLoad}>
-      {markers.map(({ id, position }) => (
+    <GoogleMap mapContainerStyle={containerStyle} zoom={2} onLoad={onLoad}>
+      {markers?.map(({ id, position }) => (
         <Marker key={id} position={position}></Marker>
       ))}
     </GoogleMap>
