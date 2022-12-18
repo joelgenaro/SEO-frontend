@@ -10,8 +10,8 @@ const Map = ({ companies }) => {
   let markers = [];
 
   markers = companies?.map((obj, key) => {
-    if (obj["Company_Location_Geo"] != "") {
-      let coordinate = obj["Company_Location_Geo"]?.split(",");
+    if (obj["Company_Location_Geo"]) {
+      let coordinate = obj["Company_Location_Geo"].split(",");
 
       let lat = Number(coordinate[0].replace('"', ""));
       let lng = Number(coordinate[1].replace('"', ""));
