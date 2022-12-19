@@ -13,18 +13,14 @@ const Map = ({ companies }) => {
     if (obj["Company_Location_Geo"]) {
       let coordinate = obj["Company_Location_Geo"].split(",");
 
-      let lat = Number(
-        coordinate[0] ? coordinate[0].slug.replace(/"/g, "") : ""
-      );
-      let lng = Number(
-        coordinate[1] ? coordinate[1].slug.replace(/"/g, "") : ""
-      );
+      let lat = Number(coordinate[0] ? coordinate[0].replace('"', "") : "");
+      let lng = Number(coordinate[1] ? coordinate[1].replace('"', "") : "");
 
       return { id: key, position: { lat: lat, lng: lng } };
     } else if (obj["Company_Location_Name"] != "") {
       let geocoder = new window.google.maps.Geocoder();
       let city = obj["Company_Location_Name"]
-        ? obj["Company_Location_Name"].slug.replace(/"/g, "")
+        ? obj["Company_Location_Name"].replaceAll('"', "")
         : "";
 
       geocoder.geocode(
