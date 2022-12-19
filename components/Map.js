@@ -19,7 +19,9 @@ const Map = ({ companies }) => {
       return { id: key, position: { lat: lat, lng: lng } };
     } else if (obj["Company_Location_Name"] != "") {
       let geocoder = new window.google.maps.Geocoder();
-      let city = obj["Company_Location_Name"] ? slug.replace('"', "") : "";
+      let city = obj["Company_Location_Name"]
+        ? obj["Company_Location_Name"].slug.replace('"', "")
+        : "";
 
       geocoder.geocode(
         {
