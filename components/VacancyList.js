@@ -15,12 +15,9 @@ const JobVacancyList = () => {
     setCompanyID(e.target.id);
     setModal(!modal);
   };
-
   return (
     <>
-      <div>
-        <Map companies={data} />
-      </div>
+      <div>{/* <Map companies={data} /> */}</div>
       <div>
         {data ? (
           data.map((company, key) => (

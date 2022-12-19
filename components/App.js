@@ -9,19 +9,7 @@ import axios from "axios";
 
 const App = ({}) => {
   //Use for all the dispatch actions
-  const dispatch = useDispatch();
   const loading = useSelector((state) => state.currentAuth.loading);
-
-  useEffect(() => {
-    fetch("https://yes-here.online/api/index")
-      .then((res) => res.json())
-      .then((res) => {
-        dispatch({ type: "UPDATE_DATA", payload: res.data.data });
-        dispatch({ type: "UPDATE_LINKS", payload: res.data });
-        dispatch({ type: "UPDATE_COUNTRIES", payload: res.countries });
-        dispatch({ type: "UPDATE_LOADING", payload: false });
-      });
-  }, []);
 
   return (
     <>

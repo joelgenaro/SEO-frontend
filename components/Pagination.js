@@ -13,20 +13,7 @@ const PaginationWithProgrees = () => {
   const data = useSelector((state) => state.currentAuth.links);
 
   const fetchData = async (pageNumber) => {
-    if (apiRoute == "index") {
-      dispatch({ type: "UPDATE_LOADING", payload: true });
-
-      const api = await fetch(
-        `https://yes-here.online/api/index?page=${pageNumber}`
-      );
-      const res = await api.json();
-
-      dispatch({ type: "UPDATE_DATA", payload: res.data.data });
-      dispatch({ type: "UPDATE_LINKS", payload: res.data });
-      dispatch({ type: "UPDATE_LOADING", payload: false });
-    } else {
-      dispatch({ type: "UPDATE_PAGE", payload: pageNumber });
-    }
+    dispatch({ type: "UPDATE_PAGE", payload: pageNumber });
   };
 
   return (
