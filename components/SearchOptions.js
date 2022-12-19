@@ -33,6 +33,14 @@ const JobSearchOptions = () => {
     disableForMenu == false ? getDatawithCurrentOption() : getDataWithText();
   }, [pageNumber]);
 
+  useEffect(() => {
+    fetch("https://yes-here.online/api/index")
+      .then((res) => res.json())
+      .then((res) => {
+        dispatch({ type: "UPDATE_COUNTRIES", payload: res.countries });
+      });
+  }, []);
+
   // Search with Drop Down Menu
   const getDatawithCurrentOption = async () => {
     let formData = $("#filterForm").serializeArray();
