@@ -58,8 +58,6 @@ const JobSearchOptions = () => {
     setDisableForMenu(false);
     setDisableForTxt(true);
 
-    // router.push("/?counter=10", undefined, { shallow: true });
-
     axios.defaults.withCredentials = true;
     axios
       .get(
