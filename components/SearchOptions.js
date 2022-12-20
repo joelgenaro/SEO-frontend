@@ -117,6 +117,7 @@ const JobSearchOptions = () => {
         dispatch({ type: "UPDATE_DATA", payload: res.data.data });
         dispatch({ type: "UPDATE_LINKS", payload: res.data });
         dispatch({ type: "UPDATE_LOADING", payload: false });
+        // router.push("/search");
       })
       .catch((err) => {
         console.log(err);

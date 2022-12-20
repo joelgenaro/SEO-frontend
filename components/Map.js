@@ -51,13 +51,13 @@ const Map = ({ companies }) => {
 
   const onLoad = (map) => {
     const bounds = new google.maps.LatLngBounds();
-    markers.forEach(({ position }) => bounds.extend(position));
+    markers?.forEach(({ position }) => bounds.extend(position));
     map.fitBounds(bounds);
   };
 
   return isLoaded ? (
     <GoogleMap mapContainerStyle={containerStyle} onLoad={onLoad}>
-      {markers.map(({ id, position }) => (
+      {markers?.map(({ id, position }) => (
         <Marker key={id} position={position}></Marker>
       ))}
     </GoogleMap>
