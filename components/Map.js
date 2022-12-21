@@ -1,14 +1,27 @@
 import React, { useEffect, useState, useCallback, memo } from "react";
-import { GoogleMap, useJsApiLoader, Marker } from "@react-google-maps/api";
+import {
+  GoogleMap,
+  useJsApiLoader,
+  Marker,
+  Circle,
+} from "@react-google-maps/api";
+import { useSelector } from "react-redux";
+import Geocode from "react-geocode";
 
 const containerStyle = {
   width: "100%",
   height: "400px",
 };
 
-const Map = ({ companies }) => {
-  let markers = [];
+const center = {
+  lat: -3.745,
+  lng: -38.523,
+};
 
+const Map = ({ companies }) => {
+  Geocode.setApiKey("AIzaSyBbN-R50057ZpqFT3mh4MjRWfc60JupK1A");
+
+  let markers = [];
   markers = companies?.map((obj, key) => {
     if (obj["Company_Location_Geo"]) {
       let coordinate = obj["Company_Location_Geo"].split(",");
@@ -18,31 +31,26 @@ const Map = ({ companies }) => {
 
       return { id: key, position: { lat: lat, lng: lng } };
     } else if (obj["Company_Location_Name"] != "") {
-      let geocoder = new window.google.maps.Geocoder();
       let city = obj["Company_Location_Name"]
         ? obj["Company_Location_Name"].replaceAll('"', "")
         : "";
 
-      geocoder.geocode(
-        {
-          address: city,
+      Geocode.fromAddress(city).then(
+        (response) => {
+          const { lat, lng } = response.results[0].geometry.location;
+          return { id: key, position: { lat: lat, lng: lng } };
         },
-        function (results, status) {
-          if (status === "OK") {
-            const result = results[0].geometry.location;
-            const lat = result.lat();
-            const lng = result.lng();
-            return { id: key, position: { lat: lat, lng: lng } };
-          }
+        (error) => {
+          console.error(error);
         }
       );
     }
   });
+
   // remove null
   markers = markers?.filter(function (element) {
     return element != undefined;
   });
-
   // map loading
   const { isLoaded } = useJsApiLoader({
     id: "google-map-script",
@@ -55,9 +63,14 @@ const Map = ({ companies }) => {
     map.fitBounds(bounds);
   };
 
-  return isLoaded ? (
-    <GoogleMap mapContainerStyle={containerStyle} onLoad={onLoad}>
-      {markers?.map(({ id, position }) => (
+  return isLoaded && markers ? (
+    <GoogleMap
+      mapContainerStyle={containerStyle}
+      center={center}
+      zoom={2}
+      onLoad={onLoad}
+    >
+      {markers.map(({ id, position }) => (
         <Marker key={id} position={position}></Marker>
       ))}
     </GoogleMap>

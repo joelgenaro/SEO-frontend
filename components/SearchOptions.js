@@ -16,6 +16,7 @@ const JobSearchOptions = () => {
   const pageNumber = useSelector((state) => state.currentAuth.page);
 
   const [title, setTitle] = useState("800M");
+  const [optionFormData, setOptionFormData] = useState([]);
   const [city, setCity] = useState("");
   const [town, setTown] = useState("");
   const [locality, setLocality] = useState("");
@@ -29,10 +30,12 @@ const JobSearchOptions = () => {
   const isFirstRun = useRef(true);
   const router = useRouter();
 
+  // get data when the pagination is changed
   useEffect(() => {
     disableForMenu == false ? getDatawithCurrentOption() : getDataWithText();
   }, [pageNumber]);
 
+  // get country
   useEffect(() => {
     fetch("https://yes-here.online/api/index")
       .then((res) => res.json())
@@ -40,6 +43,8 @@ const JobSearchOptions = () => {
         dispatch({ type: "UPDATE_COUNTRIES", payload: res.countries });
       });
   }, []);
+
+  useEffect(() => {}, [router.query]);
 
   // Search with Drop Down Menu
   const getDatawithCurrentOption = async () => {
@@ -50,6 +55,7 @@ const JobSearchOptions = () => {
 
     setSectorSearch("");
     setCountrySearch("");
+    setOptionFormData(formData);
 
     // set Title
     if (formData[0].value) {
@@ -66,6 +72,7 @@ const JobSearchOptions = () => {
     setDisableForMenu(false);
     setDisableForTxt(true);
 
+    // server request
     axios.defaults.withCredentials = true;
     axios
       .get(
@@ -75,6 +82,13 @@ const JobSearchOptions = () => {
         dispatch({ type: "UPDATE_DATA", payload: res.data.data });
         dispatch({ type: "UPDATE_LINKS", payload: res.data });
         dispatch({ type: "UPDATE_LOADING", payload: false });
+
+        // router
+        router.push(
+          `/?country=${formData[0].value}&city=${formData[1].value}&town=${formData[2].value}&locality=${formData[3].value}&sectorOne=${formData[4].value}&sectorTwo=${formData[5].value}`,
+          undefined,
+          { shallow: true }
+        );
       })
       .catch((err) => {
         console.log(err);
@@ -105,9 +119,11 @@ const JobSearchOptions = () => {
     setTitle(sectorSearch + " / " + countrySearch);
     setDisableForMenu(true);
     setDisableForTxt(false);
+    setOptionFormData([]);
 
     dispatch({ type: "UPDATE_LOADING", payload: true });
 
+    // server request
     axios.defaults.withCredentials = true;
     axios
       .get(
@@ -117,7 +133,13 @@ const JobSearchOptions = () => {
         dispatch({ type: "UPDATE_DATA", payload: res.data.data });
         dispatch({ type: "UPDATE_LINKS", payload: res.data });
         dispatch({ type: "UPDATE_LOADING", payload: false });
-        // router.push("/search");
+
+        // router
+        router.push(
+          `/?sector=${sectorSearch}&country=${countrySearch}`,
+          undefined,
+          { shallow: true }
+        );
       })
       .catch((err) => {
         console.log(err);
@@ -262,7 +284,7 @@ const JobSearchOptions = () => {
             </Col>
           </Row>
         </Form>
-        <form action="#" id="filterForm">
+        <Form action="#" id="filterForm">
           <Row className="g-2">
             <Col lg={3} md={6}>
               <div className="filler-job-form">
@@ -422,7 +444,24 @@ const JobSearchOptions = () => {
               </li>
             </Col>
           </Row>
-        </form>
+        </Form>
+        <div className="searchTitle">
+          <h2>
+            {disableForMenu
+              ? sectorSearch + " - " + countrySearch
+              : optionFormData[0]?.value +
+                " - " +
+                optionFormData[1]?.value +
+                " - " +
+                optionFormData[2]?.value +
+                " - " +
+                optionFormData[3]?.value +
+                " - " +
+                optionFormData[4]?.value +
+                " - " +
+                optionFormData[5]?.value}
+          </h2>
+        </div>
       </div>
     </>
   );

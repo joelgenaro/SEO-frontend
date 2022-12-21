@@ -3,17 +3,11 @@ import "../public/assets/css/bootstrap-purple.min.css";
 import "../public/assets/css/icons.min.css";
 import "../public/assets/css/app-purple.min.css";
 
+import { wrapper, store } from "../store/store";
 import { Provider } from "react-redux";
-import { applyMiddleware, compose, createStore } from "redux";
-import rootReducer from "../reducers/rootReducer";
 
 function MyApp({ Component, pageProps }) {
   // create redux
-
-  const composeEnhancers =
-    require("redux-devtools-extension").composeWithDevTools;
-
-  const store = createStore(rootReducer, composeEnhancers(applyMiddleware()));
 
   return (
     <>
@@ -24,4 +18,4 @@ function MyApp({ Component, pageProps }) {
   );
 }
 
-export default MyApp;
+export default wrapper.withRedux(MyApp);

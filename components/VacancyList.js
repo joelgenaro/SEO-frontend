@@ -17,9 +17,7 @@ const JobVacancyList = () => {
   };
   return (
     <>
-      <div>
-        <Map companies={data} />
-      </div>
+      <div>{data ? <Map companies={data} /> : ""}</div>
       <div>
         {data ? (
           data.map((company, key) => (
