@@ -1,6 +1,6 @@
 import React, { useState, memo } from "react";
 import Link from "next/link";
-import { Col, Input, Label, Row } from "reactstrap";
+import { Col, Row } from "reactstrap";
 import { useSelector } from "react-redux";
 import CompanyModal from "./CompanyModal";
 import Map from "./Map";
@@ -33,7 +33,7 @@ const JobVacancyList = () => {
                               id={company["id"]}
                               onClick={openModal}
                               className="companyName"
-                              href="javascript:;"
+                              href="#"
                             >
                               {"Company Name: " + company["company_name"]}
                             </Link>
@@ -71,7 +71,7 @@ const JobVacancyList = () => {
                               id={company["id"]}
                               onClick={openModal}
                               className="companyName"
-                              href="javascript:;"
+                              href="#"
                             >
                               {"Full Name: " + company["full_name"]}
                             </Link>
@@ -135,11 +135,14 @@ const JobVacancyList = () => {
           <div className="spinner-border text-primary m-1" role="status"></div>
         )}
 
-        <CompanyModal
-          modal={modal}
-          companyID={companyID}
-          openModal={openModal}
-        />
+        <div>
+          {" "}
+          <CompanyModal
+            modal={modal}
+            companyID={companyID}
+            openModal={openModal}
+          />
+        </div>
       </div>
     </>
   );

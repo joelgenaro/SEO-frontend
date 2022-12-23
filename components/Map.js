@@ -1,11 +1,5 @@
-import React, { useEffect, useState, useCallback, memo } from "react";
-import {
-  GoogleMap,
-  useJsApiLoader,
-  Marker,
-  Circle,
-} from "@react-google-maps/api";
-import { useSelector } from "react-redux";
+import React, { memo } from "react";
+import { GoogleMap, useJsApiLoader, Marker } from "@react-google-maps/api";
 import Geocode from "react-geocode";
 
 const containerStyle = {

@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
-import Link from "next/link";
-import { Col, Container, Row } from "reactstrap";
+import { Col, Container } from "reactstrap";
 
 const Section = () => {
   const [isMenu, setIsMenu] = useState(false);
@@ -25,7 +24,7 @@ const Section = () => {
           <Col lg={12}>
             <div className="me-lg-5 headerDiv">
               <div className="pCompanyLogo">
-                <img className="companyLogo" src="./vercel.svg" />
+                <img className="companyLogo" src="../../vercel.svg" />
               </div>
               <div className="dropdownMenu">
                 <button onClick={dropDown} name="dropbtn" className="dropbtn">

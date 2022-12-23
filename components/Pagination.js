@@ -1,8 +1,6 @@
-import React, { useEffect, memo } from "react";
-import Link from "next/link";
+import React, { memo } from "react";
 import { Col, Row } from "reactstrap";
 import Pagination from "react-js-pagination";
-import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 
 const PaginationWithProgrees = () => {

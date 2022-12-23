@@ -26,8 +26,6 @@ const JobSearchOptions = () => {
   const [countrySearch, setCountrySearch] = useState("");
   const [disableForMenu, setDisableForMenu] = useState(false);
   const [disableForTxt, setDisableForTxt] = useState(false);
-
-  const isFirstRun = useRef(true);
   const router = useRouter();
 
   // get data when the pagination is changed
@@ -44,7 +42,7 @@ const JobSearchOptions = () => {
       });
   }, []);
 
-  useEffect(() => {}, [router.query]);
+  useEffect(() => { }, [router.query]);
 
   // Search with Drop Down Menu
   const getDatawithCurrentOption = async () => {
@@ -84,11 +82,20 @@ const JobSearchOptions = () => {
         dispatch({ type: "UPDATE_LOADING", payload: false });
 
         // router
-        router.push(
-          `/?country=${formData[0].value}&city=${formData[1].value}&town=${formData[2].value}&locality=${formData[3].value}&sectorOne=${formData[4].value}&sectorTwo=${formData[5].value}`,
-          undefined,
-          { shallow: true }
-        );
+        if (optionFormData.length == 0) {
+          router.push(`/search/index`);
+        } else {
+          const parameterUrl = (((formData[0].value) ? (formData[0].value) : '') +
+            ((formData[1].value) ? ("-" + formData[0].value) : '') +
+            ((formData[2].value) ? ("-" + formData[0].value) : '') +
+            ((formData[3].value) ? ("-" + formData[0].value) : '') +
+            ((formData[4].value) ? ("-" + formData[0].value) : '') +
+            ((formData[5].value) ? ("-" + formData[0].value) : ''));
+
+          router.push(
+            `/search/${parameterUrl}`
+          );
+        }
       })
       .catch((err) => {
         console.log(err);
@@ -135,10 +142,10 @@ const JobSearchOptions = () => {
         dispatch({ type: "UPDATE_LOADING", payload: false });
 
         // router
+        const parameterUrl = ((sectorSearch ? (sectorSearch) : '') + (countrySearch ? ("-" + countrySearch) : ''));
+
         router.push(
-          `/?sector=${sectorSearch}&country=${countrySearch}`,
-          undefined,
-          { shallow: true }
+          `/search/${parameterUrl}`
         );
       })
       .catch((err) => {
@@ -302,10 +309,10 @@ const JobSearchOptions = () => {
                   <option value="">...</option>
                   {countries
                     ? countries.map((country, key) => (
-                        <option key={key} value={country["location_country"]}>
-                          {country["location_country"]}
-                        </option>
-                      ))
+                      <option key={key} value={country["location_country"]}>
+                        {country["location_country"]}
+                      </option>
+                    ))
                     : "Loading..."}
                 </select>
               </div>
@@ -327,10 +334,10 @@ const JobSearchOptions = () => {
 
                   {city
                     ? city.map((city, key) => (
-                        <option key={key} value={city.region}>
-                          {city.region}
-                        </option>
-                      ))
+                      <option key={key} value={city.region}>
+                        {city.region}
+                      </option>
+                    ))
                     : "loading..."}
                 </select>
               </div>
@@ -351,10 +358,10 @@ const JobSearchOptions = () => {
                   <option value="">...</option>
                   {town
                     ? town.map((town, key) => (
-                        <option key={key} value={town.metro}>
-                          {town.metro}
-                        </option>
-                      ))
+                      <option key={key} value={town.metro}>
+                        {town.metro}
+                      </option>
+                    ))
                     : "Loading..."}
                 </select>
               </div>
@@ -375,10 +382,10 @@ const JobSearchOptions = () => {
                   <option value="">...</option>
                   {locality
                     ? locality.map((elem, key) => (
-                        <option key={key} value={elem.locality}>
-                          {elem.locality}
-                        </option>
-                      ))
+                      <option key={key} value={elem.locality}>
+                        {elem.locality}
+                      </option>
+                    ))
                     : ""}
                 </select>
               </div>
@@ -402,10 +409,10 @@ const JobSearchOptions = () => {
                   <option value="">...</option>
                   {sectorOne
                     ? sectorOne.map((elem, key) => (
-                        <option key={key} value={elem.industry}>
-                          {elem.industry}
-                        </option>
-                      ))
+                      <option key={key} value={elem.industry}>
+                        {elem.industry}
+                      </option>
+                    ))
                     : ""}
                 </select>
               </div>
@@ -425,10 +432,10 @@ const JobSearchOptions = () => {
                   <option value="">...</option>
                   {sectorTwo
                     ? sectorTwo.map((elem, key) => (
-                        <option key={key} value={elem.industry_two}>
-                          {elem.industry_two}
-                        </option>
-                      ))
+                      <option key={key} value={elem.industry_two}>
+                        {elem.industry_two}
+                      </option>
+                    ))
                     : ""}
                 </select>
               </div>
@@ -448,18 +455,13 @@ const JobSearchOptions = () => {
         <div className="searchTitle">
           <h2>
             {disableForMenu
-              ? sectorSearch + " - " + countrySearch
-              : optionFormData[0]?.value +
-                " - " +
-                optionFormData[1]?.value +
-                " - " +
-                optionFormData[2]?.value +
-                " - " +
-                optionFormData[3]?.value +
-                " - " +
-                optionFormData[4]?.value +
-                " - " +
-                optionFormData[5]?.value}
+              ? ((sectorSearch ? (sectorSearch) : '') + (countrySearch ? ("-" + countrySearch) : ''))
+              : (((optionFormData[0] ? (optionFormData[0].value) : '')) +
+                ((optionFormData[1] ? ("-" + optionFormData[1].value) : '')) +
+                ((optionFormData[2] ? ("-" + optionFormData[2].value) : '')) +
+                ((optionFormData[3] ? ("-" + optionFormData[3].value) : '')) +
+                ((optionFormData[4] ? ("-" + optionFormData[4].value) : '')) +
+                ((optionFormData[5] ? ("-" + optionFormData[5].value) : '')))}
           </h2>
         </div>
       </div>
