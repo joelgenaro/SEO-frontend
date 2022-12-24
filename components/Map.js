@@ -1,4 +1,4 @@
-import React, { memo, useState, useCallback } from "react";
+import React, { memo, useState } from "react";
 import { GoogleMap, useJsApiLoader, Marker } from "@react-google-maps/api";
 import Geocode from "react-geocode";
 
@@ -13,36 +13,71 @@ const center = {
 };
 
 const Map = ({ companies }) => {
+  const [map, setMap] = useState(null);
+  // map loading
   const { isLoaded } = useJsApiLoader({
-    id: 'google-map-script',
-    googleMapsApiKey: "YOUR_API_KEY"
-  })
+    id: "google-map-script",
+    googleMapsApiKey: "AIzaSyBbN-R50057ZpqFT3mh4MjRWfc60JupK1A",
+  });
+  Geocode.setApiKey("AIzaSyBbN-R50057ZpqFT3mh4MjRWfc60JupK1A");
 
-  const [map, setMap] = useState(null)
+  let markers = [];
 
-  const onLoad = useCallback(function callback(map) {
-    // This is just an example of getting and using the map instance!!! don't just blindly copy!
-    const bounds = new window.google.maps.LatLngBounds(center);
+  markers = companies?.map((obj, key) => {
+    if (obj["Company_Location_Geo"]) {
+      let coordinate = obj["Company_Location_Geo"].split(",");
+
+      let lat = Number(coordinate[0] ? coordinate[0].replace('"', "") : "");
+      let lng = Number(coordinate[1] ? coordinate[1].replace('"', "") : "");
+
+      return { id: key, position: { lat: lat, lng: lng } };
+    } else if (obj["Company_Location_Name"] != "") {
+      let city = obj["Company_Location_Name"]
+        ? obj["Company_Location_Name"].replaceAll('"', "")
+        : "";
+
+      Geocode.fromAddress(city).then(
+        (response) => {
+          const { lat, lng } = response.results[0].geometry.location;
+          return { id: key, position: { lat: lat, lng: lng } };
+        },
+        (error) => {
+          console.error(error);
+        }
+      );
+    }
+  });
+
+  // remove null
+  markers = markers?.filter(function (element) {
+    return element != undefined;
+  });
+
+  const onLoad = (map) => {
+    const bounds = new google.maps.LatLngBounds();
+    markers?.forEach(({ position }) => bounds.extend(position));
     map.fitBounds(bounds);
 
-    setMap(map)
-  }, [])
+    setMap(map);
+  };
 
-  const onUnmount = useCallback(function callback(map) {
+  const onUnmount = React.useCallback(function callback(map) {
     setMap(null)
   }, [])
 
-  return isLoaded ? (
+  return isLoaded && markers ? (
     <GoogleMap
       mapContainerStyle={containerStyle}
-      center={center}
-      zoom={10}
       onLoad={onLoad}
       onUnmount={onUnmount}
     >
-
+      {markers.map(({ id, position }) => (
+        <Marker key={id} position={position}></Marker>
+      ))}
     </GoogleMap>
-  ) : <></>
+  ) : (
+    <></>
+  );
 };
 
 export default memo(Map);
