@@ -6,6 +6,7 @@ const initState = {
   sectorOne: null,
   sectorTwo: null,
   links: null,
+  title: '',
   page: 1,
 };
 
