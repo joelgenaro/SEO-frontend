@@ -6,8 +6,6 @@ import { useDispatch, useSelector } from "react-redux";
 const PaginationWithProgrees = () => {
   //Use for all the dispatch actions
   const dispatch = useDispatch();
-
-  const apiRoute = useSelector((state) => state.currentAuth.apiRoute);
   const data = useSelector((state) => state.currentAuth.links);
 
   const fetchData = async (pageNumber) => {

@@ -35,14 +35,12 @@ const JobSearchOptions = () => {
 
   // get country
   useEffect(() => {
-    fetch("https://yes-here.online/api/index")
+    fetch("http://127.0.0.1:8000/api/index")
       .then((res) => res.json())
       .then((res) => {
         dispatch({ type: "UPDATE_COUNTRIES", payload: res.countries });
       });
   }, []);
-
-  useEffect(() => { }, [router.query]);
 
   // Search with Drop Down Menu
   const getDatawithCurrentOption = async () => {
@@ -74,7 +72,7 @@ const JobSearchOptions = () => {
     axios.defaults.withCredentials = true;
     axios
       .get(
-        `https://yes-here.online/api/getData?page=${pageNumber}&country=${formData[0].value}&city=${formData[1].value}&town=${formData[2].value}&locality=${formData[3].value}&sectorOne=${formData[4].value}&sectorTwo=${formData[5].value}`
+        `http://127.0.0.1:8000/api/getData?page=${pageNumber}&country=${formData[0].value}&city=${formData[1].value}&town=${formData[2].value}&locality=${formData[3].value}&sectorOne=${formData[4].value}&sectorTwo=${formData[5].value}`
       )
       .then((res) => {
         dispatch({ type: "UPDATE_DATA", payload: res.data.data });
@@ -82,20 +80,16 @@ const JobSearchOptions = () => {
         dispatch({ type: "UPDATE_LOADING", payload: false });
 
         // router
-        if (optionFormData.length == 0) {
-          router.push(`/search/index`);
-        } else {
-          const parameterUrl = (((formData[0].value) ? (formData[0].value) : '') +
-            ((formData[1].value) ? ("-" + formData[0].value) : '') +
-            ((formData[2].value) ? ("-" + formData[0].value) : '') +
-            ((formData[3].value) ? ("-" + formData[0].value) : '') +
-            ((formData[4].value) ? ("-" + formData[0].value) : '') +
-            ((formData[5].value) ? ("-" + formData[0].value) : ''));
+        const parameterUrl = (((formData[0].value) ? (formData[0].value) : '') +
+          ((formData[1].value) ? ("-" + formData[0].value) : '') +
+          ((formData[2].value) ? ("-" + formData[0].value) : '') +
+          ((formData[3].value) ? ("-" + formData[0].value) : '') +
+          ((formData[4].value) ? ("-" + formData[0].value) : '') +
+          ((formData[5].value) ? ("-" + formData[0].value) : ''));
 
-          router.push(
-            `/search/${parameterUrl}`
-          );
-        }
+        router.push(
+          `/search/index?${parameterUrl}`
+        );
       })
       .catch((err) => {
         console.log(err);
@@ -134,7 +128,7 @@ const JobSearchOptions = () => {
     axios.defaults.withCredentials = true;
     axios
       .get(
-        `https://yes-here.online/api/getDataWithText?page=${pageNumber}&sector=${sectorSearch}&country=${countrySearch}`
+        `http://127.0.0.1:8000/api/getDataWithText?page=${pageNumber}&sector=${sectorSearch}&country=${countrySearch}`
       )
       .then((res) => {
         dispatch({ type: "UPDATE_DATA", payload: res.data.data });
@@ -145,7 +139,7 @@ const JobSearchOptions = () => {
         const parameterUrl = ((sectorSearch ? (sectorSearch) : '') + (countrySearch ? ("-" + countrySearch) : ''));
 
         router.push(
-          `/search/${parameterUrl}`
+          `/search/index?${parameterUrl}`
         );
       })
       .catch((err) => {
@@ -196,7 +190,7 @@ const JobSearchOptions = () => {
       axios.defaults.withCredentials = true;
       axios
         .get(
-          `https://yes-here.online/api/getSearchOptions?type=${type}&country=${formData[0].value}&city=${formData[1].value}&town=${formData[2].value}&locality=${formData[3].value}&sectorOne=${formData[4].value}`
+          `http://127.0.0.1:8000/api/getSearchOptions?type=${type}&country=${formData[0].value}&city=${formData[1].value}&town=${formData[2].value}&locality=${formData[3].value}&sectorOne=${formData[4].value}`
         )
         .then((res) => {
           switch (type) {
