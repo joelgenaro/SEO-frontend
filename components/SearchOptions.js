@@ -35,7 +35,7 @@ const JobSearchOptions = () => {
 
   // get country
   useEffect(() => {
-    fetch("https:yes-here.online/api/index")
+    fetch("https://yes-here.online/api/index")
       .then((res) => res.json())
       .then((res) => {
         dispatch({ type: "UPDATE_COUNTRIES", payload: res.countries });
@@ -72,7 +72,7 @@ const JobSearchOptions = () => {
     axios.defaults.withCredentials = true;
     axios
       .get(
-        `https:yes-here.online/api/getData?page=${pageNumber}&country=${formData[0].value}&city=${formData[1].value}&town=${formData[2].value}&locality=${formData[3].value}&sectorOne=${formData[4].value}&sectorTwo=${formData[5].value}`
+        `https://yes-here.online/api/getData?page=${pageNumber}&country=${formData[0].value}&city=${formData[1].value}&town=${formData[2].value}&locality=${formData[3].value}&sectorOne=${formData[4].value}&sectorTwo=${formData[5].value}`
       )
       .then((res) => {
         dispatch({ type: "UPDATE_DATA", payload: res.data.data });
@@ -128,7 +128,7 @@ const JobSearchOptions = () => {
     axios.defaults.withCredentials = true;
     axios
       .get(
-        `https:yes-here.online/api/getDataWithText?page=${pageNumber}&sector=${sectorSearch}&country=${countrySearch}`
+        `https://yes-here.online/api/getDataWithText?page=${pageNumber}&sector=${sectorSearch}&country=${countrySearch}`
       )
       .then((res) => {
         dispatch({ type: "UPDATE_DATA", payload: res.data.data });
@@ -190,7 +190,7 @@ const JobSearchOptions = () => {
       axios.defaults.withCredentials = true;
       axios
         .get(
-          `https:yes-here.online/api/getSearchOptions?type=${type}&country=${formData[0].value}&city=${formData[1].value}&town=${formData[2].value}&locality=${formData[3].value}&sectorOne=${formData[4].value}`
+          `https://yes-here.online/api/getSearchOptions?type=${type}&country=${formData[0].value}&city=${formData[1].value}&town=${formData[2].value}&locality=${formData[3].value}&sectorOne=${formData[4].value}`
         )
         .then((res) => {
           switch (type) {
