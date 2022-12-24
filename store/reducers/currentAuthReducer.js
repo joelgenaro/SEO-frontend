@@ -6,7 +6,7 @@ const initState = {
   sectorOne: null,
   sectorTwo: null,
   links: null,
-  page: 1,
+  page: 3,
 };
 
 const currentAuthReducer = (state = initState, action) => {

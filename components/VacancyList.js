@@ -1,23 +1,65 @@
-import React, { useState, memo } from "react";
+import React, { useState, memo, useEffect } from "react";
 import Link from "next/link";
 import { Col, Row } from "reactstrap";
 import { useSelector } from "react-redux";
 import CompanyModal from "./CompanyModal";
+import Geocode from "react-geocode";
 import Map from "./Map";
 
 const JobVacancyList = () => {
-  //Apply Now Model
   const data = useSelector((state) => state.currentAuth.data);
   const [modal, setModal] = useState(false);
   const [companyID, setCompanyID] = useState(null);
+  const [markers, setMarkers] = useState(null);
+
+  // Set key
+  Geocode.setApiKey("AIzaSyBbN-R50057ZpqFT3mh4MjRWfc60JupK1A");
+
+  useEffect(() => {
+    if (data) {
+      let tempMarkers = [];
+
+      tempMarkers = data.map((obj, key) => {
+        if (obj["Company_Location_Geo"]) {
+          let coordinate = obj["Company_Location_Geo"].split(",");
+
+          let lat = Number(coordinate[0] ? coordinate[0].replace('"', "") : "");
+          let lng = Number(coordinate[1] ? coordinate[1].replace('"', "") : "");
+
+          return { id: key, position: { lat: lat, lng: lng } };
+        } else if (obj["Company_Location_Name"] != "") {
+          let city = obj["Company_Location_Name"]
+            ? obj["Company_Location_Name"].replaceAll('"', "")
+            : "";
+
+          Geocode.fromAddress(city).then(
+            (response) => {
+              const { lat, lng } = response.results[0].geometry.location;
+              return { id: key, position: { lat: lat, lng: lng } };
+            },
+            (error) => {
+              console.error(error);
+            }
+          );
+        }
+      });
+
+      tempMarkers = tempMarkers?.filter(function (element) {
+        return element != undefined;
+      });
+
+      setMarkers(tempMarkers)
+    }
+  }, [data])
 
   const openModal = (e) => {
     setCompanyID(e.target.id);
     setModal(!modal);
   };
+
   return (
     <>
-      <div>{data ? <Map companies={data} /> : ""}</div>
+      {/* <div>{markers ? <Map markers={markers} /> : null}</div> */}
       <div>
         {data ? (
           data.map((company, key) => (
