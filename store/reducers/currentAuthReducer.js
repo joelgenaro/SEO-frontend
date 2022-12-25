@@ -12,6 +12,8 @@ const initState = {
 
 const currentAuthReducer = (state = initState, action) => {
   switch (action.type) {
+    case "UPDATE_TITLE":
+      return { ...state, title: action.payload };
     case "UPDATE_LOADING":
       return { ...state, loading: action.payload };
     case "UPDATE_DATA":

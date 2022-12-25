@@ -55,11 +55,11 @@ const JobSearchOptions = () => {
     // set Title
     if (formData[0].value) {
       let temp = formData[0].value;
-      temp += formData[1].value ? formData[1].value + " / " : "";
-      temp += formData[2].value ? formData[2].value + " / " : "";
-      temp += formData[3].value ? formData[3].value + " / " : "";
-      temp += formData[4].value ? formData[4].value + " / " : "";
-      temp += formData[5].value ? formData[5].value + " / " : "";
+      temp += formData[1].value ? " - " + formData[1].value : "";
+      temp += formData[2].value ? " - " + formData[2].value : "";
+      temp += formData[3].value ? " - " + formData[3].value : "";
+      temp += formData[4].value ? " - " + formData[4].value : "";
+      temp += formData[5].value ? " - " + formData[5].value : "";
 
       dispatch({ type: "UPDATE_TITLE", payload: temp });
     }
@@ -80,15 +80,21 @@ const JobSearchOptions = () => {
 
         // router
         const parameterUrl = (((formData[0].value) ? (formData[0].value) : '') +
-          ((formData[1].value) ? ("-" + formData[0].value) : '') +
-          ((formData[2].value) ? ("-" + formData[0].value) : '') +
-          ((formData[3].value) ? ("-" + formData[0].value) : '') +
-          ((formData[4].value) ? ("-" + formData[0].value) : '') +
-          ((formData[5].value) ? ("-" + formData[0].value) : ''));
+          ((formData[1].value) ? ("-" + formData[1].value) : '') +
+          ((formData[2].value) ? ("-" + formData[2].value) : '') +
+          ((formData[3].value) ? ("-" + formData[3].value) : '') +
+          ((formData[4].value) ? ("-" + formData[4].value) : '') +
+          ((formData[5].value) ? ("-" + formData[5].value) : ''));
 
-        router.push(
-          `/search/index?${parameterUrl}`
-        );
+        if (formData.length == 0) {
+          router.push(
+            `/search/index`
+          );
+        } else {
+          router.push(
+            `/search/${parameterUrl}`
+          );
+        }
       })
       .catch((err) => {
         console.log(err);
@@ -107,8 +113,8 @@ const JobSearchOptions = () => {
 
     // set Title
     let temp = "";
-    temp += sectorSearch ? sectorSearch + " / " : "";
-    temp += countrySearch ? countrySearch + " / " : "";
+    temp += sectorSearch ? sectorSearch + " - " : "";
+    temp += countrySearch ? countrySearch : "";
 
     dispatch({ type: "UPDATE_TITLE", payload: temp });
 
@@ -117,7 +123,7 @@ const JobSearchOptions = () => {
     setLocality("");
     setSectorOne("");
     setSectorTwo("");
-    setTitle(sectorSearch + " / " + countrySearch);
+    setTitle(sectorSearch + " - " + countrySearch);
     setDisableForMenu(true);
     setDisableForTxt(false);
     setOptionFormData([]);
@@ -136,11 +142,17 @@ const JobSearchOptions = () => {
         dispatch({ type: "UPDATE_LOADING", payload: false });
 
         // router
-        const parameterUrl = ((sectorSearch ? (sectorSearch) : '') + (countrySearch ? ("-" + countrySearch) : ''));
+        const parameterUrl = ((sectorSearch ? (sectorSearch + '-') : '') + (countrySearch ? (countrySearch) : ''));
 
-        router.push(
-          `/search/index?${parameterUrl}`
-        );
+        if (sectorSearch && countrySearch) {
+          router.push(
+            `/search/${parameterUrl}`
+          );
+        } else {
+          router.push(
+            `/search/index`
+          );
+        }
       })
       .catch((err) => {
         console.log(err);
