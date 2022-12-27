@@ -17,7 +17,6 @@ const JobVacancyList = () => {
 
   // Get geoArray
   const fetchData = (async (companies) => {
-    console.log(companies)
     const promises = companies.map(async (obj, key) => {
       if (obj["Company_Location_Geo"]) {
         let coordinate = obj["Company_Location_Geo"].split(",");
@@ -27,13 +26,13 @@ const JobVacancyList = () => {
 
         return { id: key, position: { lat: lat, lng: lng } };
 
-      } else if (obj["Company_Location_Region"] != "") {
+      } else if (obj["Company_Location_Region"]) {
         let city = obj["Company_Location_Region"]
           ? obj["Company_Location_Region"].replaceAll('"', "")
           : "";
 
         return await geoLatcode(city, key);
-      } else if (obj["location_country"] != "") {
+      } else if (obj["location_country"]) {
         let city = obj["location_country"]
           ? obj["location_country"].replaceAll('"', "")
           : "";
