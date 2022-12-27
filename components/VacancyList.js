@@ -26,9 +26,9 @@ const JobVacancyList = () => {
 
         return { id: key, position: { lat: lat, lng: lng } };
 
-      } else if (obj["Company_Location_Region"]) {
-        let city = obj["Company_Location_Region"]
-          ? obj["Company_Location_Region"].replaceAll('"', "")
+      } else if (obj["Company_Location_Name"]) {
+        let city = obj["Company_Location_Name"]
+          ? obj["Company_Location_Name"].replaceAll('"', "")
           : "";
 
         return await geoLatcode(city, key);
