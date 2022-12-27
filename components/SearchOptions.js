@@ -6,7 +6,7 @@ import $ from "jquery";
 import { useDispatch, useSelector } from "react-redux";
 import { useRouter } from "next/router";
 
-const JobSearchOptions = () => {
+const SearchOptions = () => {
   //Use for all the dispatch actions
   const dispatch = useDispatch();
 
@@ -380,4 +380,4 @@ const JobSearchOptions = () => {
   );
 };
 
-export default memo(JobSearchOptions);
+export default memo(SearchOptions);

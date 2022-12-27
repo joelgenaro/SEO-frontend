@@ -17,8 +17,9 @@ const JobVacancyList = () => {
 
   // Get geoArray
   const fetchData = (async (companies) => {
+    console.log(companies)
     const promises = companies.map(async (obj, key) => {
-      if (obj["Company_Location_Geo"] != '') {
+      if (obj["Company_Location_Geo"] != "") {
         let coordinate = obj["Company_Location_Geo"].split(",");
 
         let lat = Number(coordinate[0] ? coordinate[0].replace('"', "") : "");
