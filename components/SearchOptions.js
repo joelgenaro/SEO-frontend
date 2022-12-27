@@ -1,10 +1,9 @@
-import React, { useState, useEffect, useRef, memo } from "react";
+import React, { useState, memo, useEffect } from "react";
 import { Col, Form } from "react-bootstrap";
 import { Input, Row } from "reactstrap";
 import axios from "axios";
 import $ from "jquery";
 import { useDispatch, useSelector } from "react-redux";
-import Select from "react-select";
 import { useRouter } from "next/router";
 
 const JobSearchOptions = () => {
@@ -14,7 +13,6 @@ const JobSearchOptions = () => {
   const countries = useSelector((state) => state.currentAuth.countries);
   const pageNumber = useSelector((state) => state.currentAuth.page);
 
-  const [title, setTitle] = useState("800M");
   const [optionFormData, setOptionFormData] = useState([]);
   const [city, setCity] = useState("");
   const [town, setTown] = useState("");
@@ -32,73 +30,21 @@ const JobSearchOptions = () => {
     disableForMenu == false ? getDatawithCurrentOption() : getDataWithText();
   }, [pageNumber]);
 
-  // get country
-  useEffect(() => {
-    fetch("https://yes-here.online/api/index")
-      .then((res) => res.json())
-      .then((res) => {
-        dispatch({ type: "UPDATE_COUNTRIES", payload: res.countries });
-      });
-  }, []);
-
   // Search with Drop Down Menu
   const getDatawithCurrentOption = async () => {
     let formData = $("#filterForm").serializeArray();
 
     dispatch({ type: "UPDATE_LOADING", payload: true });
-    dispatch({ type: "UPDATE_API_ROUTE", payload: "getData" });
 
     setSectorSearch("");
     setCountrySearch("");
     setOptionFormData(formData);
-
-    // set Title
-    if (formData[0].value) {
-      let temp = formData[0].value;
-      temp += formData[1].value ? " - " + formData[1].value : "";
-      temp += formData[2].value ? " - " + formData[2].value : "";
-      temp += formData[3].value ? " - " + formData[3].value : "";
-      temp += formData[4].value ? " - " + formData[4].value : "";
-      temp += formData[5].value ? " - " + formData[5].value : "";
-
-      dispatch({ type: "UPDATE_TITLE", payload: temp });
-    }
-
     setDisableForMenu(false);
     setDisableForTxt(true);
 
-    // server request
-    axios.defaults.withCredentials = true;
-    axios
-      .get(
-        `https://yes-here.online/api/getData?page=${pageNumber}&country=${formData[0].value}&city=${formData[1].value}&town=${formData[2].value}&locality=${formData[3].value}&sectorOne=${formData[4].value}&sectorTwo=${formData[5].value}`
-      )
-      .then((res) => {
-        dispatch({ type: "UPDATE_DATA", payload: res.data.data });
-        dispatch({ type: "UPDATE_LINKS", payload: res.data });
-        dispatch({ type: "UPDATE_LOADING", payload: false });
-
-        // router
-        const parameterUrl = (((formData[0].value) ? (formData[0].value) : '') +
-          ((formData[1].value) ? ("-" + formData[1].value) : '') +
-          ((formData[2].value) ? ("-" + formData[2].value) : '') +
-          ((formData[3].value) ? ("-" + formData[3].value) : '') +
-          ((formData[4].value) ? ("-" + formData[4].value) : '') +
-          ((formData[5].value) ? ("-" + formData[5].value) : ''));
-
-        if (formData.length == 0) {
-          router.push(
-            `/search/index`
-          );
-        } else {
-          router.push(
-            `/search/${parameterUrl}`
-          );
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    router.push(
+      `/search/getData?page=${pageNumber}&country=${formData[0].value}&city=${formData[1].value}&town=${formData[2].value}&locality=${formData[3].value}&sectorOne=${formData[4].value}&sectorTwo=${formData[5].value}`
+    );
   };
 
   const handleKeyDown = (event) => {
@@ -111,52 +57,20 @@ const JobSearchOptions = () => {
   const getDataWithText = () => {
     if (sectorSearch == "" && countrySearch == "") return;
 
-    // set Title
-    let temp = "";
-    temp += sectorSearch ? sectorSearch + " - " : "";
-    temp += countrySearch ? countrySearch : "";
-
-    dispatch({ type: "UPDATE_TITLE", payload: temp });
-
     setCity("");
     setTown("");
     setLocality("");
     setSectorOne("");
     setSectorTwo("");
-    setTitle(sectorSearch + " - " + countrySearch);
     setDisableForMenu(true);
     setDisableForTxt(false);
     setOptionFormData([]);
 
     dispatch({ type: "UPDATE_LOADING", payload: true });
 
-    // server request
-    axios.defaults.withCredentials = true;
-    axios
-      .get(
-        `https://yes-here.online/api/getDataWithText?page=${pageNumber}&sector=${sectorSearch}&country=${countrySearch}`
-      )
-      .then((res) => {
-        dispatch({ type: "UPDATE_DATA", payload: res.data.data });
-        dispatch({ type: "UPDATE_LINKS", payload: res.data });
-        dispatch({ type: "UPDATE_LOADING", payload: false });
-
-        // router
-        const parameterUrl = ((sectorSearch ? (sectorSearch + '-') : '') + (countrySearch ? (countrySearch) : ''));
-
-        if (sectorSearch && countrySearch) {
-          router.push(
-            `/search/${parameterUrl}`
-          );
-        } else {
-          router.push(
-            `/search/index`
-          );
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    router.push(
+      `/search/getDataWithText?page=${pageNumber}&sector=${sectorSearch}&country=${countrySearch}`
+    );
   };
 
   // get childrens when changing parent option

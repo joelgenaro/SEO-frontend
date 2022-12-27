@@ -5,10 +5,10 @@ import "../public/assets/css/app-purple.min.css";
 
 import { wrapper, store } from "../store/store";
 import { Provider } from "react-redux";
+import App from 'next/app'
 
 function MyApp({ Component, pageProps }) {
   // create redux
-
   return (
     <>
       <Provider store={store}>

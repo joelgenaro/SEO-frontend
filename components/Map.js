@@ -1,5 +1,5 @@
-import React, { useState, useCallback, memo } from 'react'
-import { GoogleMap, useJsApiLoader, Marker } from '@react-google-maps/api';
+import React, { useState, useRef, memo, useEffect } from 'react'
+import { GoogleMap, useJsApiLoader, Marker, Circle } from '@react-google-maps/api';
 
 const containerStyle = {
   width: '100%',
@@ -7,34 +7,45 @@ const containerStyle = {
 };
 
 const Map = ({ markers }) => {
-
   const { isLoaded } = useJsApiLoader({
     id: 'google-map-script',
     googleMapsApiKey: "AIzaSyBbN-R50057ZpqFT3mh4MjRWfc60JupK1A"
   })
-  const [map, setMap] = useState(null)
+  const mapRef = useRef(null);
 
-  const onLoad = useCallback(function callback(map) {
-    // This is just an example of getting and using the map instance!!! don't just blindly copy!
-    const bounds = new window.google.maps.LatLngBounds();
+  const onLoad = (map) => {
+    const bounds = new window.google.maps.LatLngBounds(markers[0].position);
     markers.forEach(({ position }) => bounds.extend(position));
     map.fitBounds(bounds);
+  };
 
-    setMap(map)
-  }, [])
+  useEffect(() => {
 
-  const onUnmount = useCallback(function callback(map) {
-    setMap(null)
-  }, [])
+  }, [markers])
 
   return isLoaded ? (
     <GoogleMap
       mapContainerStyle={containerStyle}
       onLoad={onLoad}
-      onUnmount={onUnmount}
+      center={markers[0].position}
+      zoom={2}
+      ref={mapRef}
     >
       {markers.map(({ id, position }) => (
         <Marker key={id} position={position}></Marker>
+        // <Circle
+        //   key={id}
+        //   center={position}
+        //   radius={500000}
+        //   options={{
+        //     strokeColor: "#66009a",
+        //     strokeOpacity: 0.8,
+        //     strokeWeight: 2,
+        //     fillColor: `#66009a`,
+        //     fillOpacity: 0.35,
+        //     zIndex: 1
+        //   }}
+        // />
       ))}
     </GoogleMap>
   ) : <></>

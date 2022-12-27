@@ -5,7 +5,8 @@ import SearchOptions from "./SearchOptions";
 import VacancyList from "./VacancyList";
 import Pagination from "./Pagination";
 
-const App = ({}) => {
+const App = () => {
+
   return (
     <>
       <Section />

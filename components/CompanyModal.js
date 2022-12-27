@@ -15,10 +15,6 @@ const CompanyModal = ({ modal, openModal, companyID }) => {
     companySrc =
       "https://www.google.com/maps/embed/v1/place?key=AIzaSyBbN-R50057ZpqFT3mh4MjRWfc60JupK1A&q=" +
       companyDetails?.["Company_Location_Geo"];
-  } else if (companyDetails?.["Company_Location_Street_Address"] != "") {
-    companySrc =
-      "https://www.google.com/maps/embed/v1/place?key=AIzaSyBbN-R50057ZpqFT3mh4MjRWfc60JupK1A&q=" +
-      companyDetails?.["Company_Location_Street_Address"];
   } else if (companyDetails?.["Company_Location_Name"] != "") {
     companySrc =
       "https://www.google.com/maps/embed/v1/place?key=AIzaSyBbN-R50057ZpqFT3mh4MjRWfc60JupK1A&q=" +
