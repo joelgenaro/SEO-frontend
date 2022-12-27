@@ -77,6 +77,8 @@ const SearchOptions = () => {
   function handleChange(type, value) {
     let formData = $("#filterForm").serializeArray();
 
+    console.log('formData==========>', formData, 'type===================>', type, 'value==================>', value);
+
     switch (type) {
       case "country":
         setCity("");
@@ -119,6 +121,8 @@ const SearchOptions = () => {
           `https://yes-here.online/api/getSearchOptions?type=${type}&country=${formData[0].value}&city=${formData[1].value}&town=${formData[2].value}&locality=${formData[3].value}&sectorOne=${formData[4].value}`
         )
         .then((res) => {
+          console.log('res=================>', res);
+
           switch (type) {
             case "country":
               setCity(res.data.main);
@@ -224,7 +228,7 @@ const SearchOptions = () => {
                         {country["location_country"]}
                       </option>
                     ))
-                    : "Loading..."}
+                    : null}
                 </select>
               </div>
             </Col>
@@ -249,7 +253,7 @@ const SearchOptions = () => {
                         {city.region}
                       </option>
                     ))
-                    : "loading..."}
+                    : null}
                 </select>
               </div>
             </Col>
@@ -273,7 +277,7 @@ const SearchOptions = () => {
                         {town.metro}
                       </option>
                     ))
-                    : "Loading..."}
+                    : null}
                 </select>
               </div>
             </Col>
