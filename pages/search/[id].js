@@ -23,7 +23,7 @@ const Search = ({ res, path, title }) => {
       <Head>
         <title>{title}</title>
         <meta name="description" content={title} />
-        <link href={`https://seo-frontend.netlify.app/search/${path}`} />
+        <link rel='searchLink' href={`https://seo-frontend.netlify.app/search/${path}`} />
       </Head>
       <main>
         <App />

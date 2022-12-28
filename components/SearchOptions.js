@@ -39,9 +39,6 @@ const SearchOptions = () => {
     let formData = $("#filterForm").serializeArray();
 
     dispatch({ type: "UPDATE_LOADING", payload: true });
-    dispatch({ type: "UPDATE_APIROUTE", payload: 'getData' });
-    dispatch({ type: "UPDATE_PAGE", payload: 1 });
-
     setSectorSearch("");
     setCountrySearch("");
 
@@ -67,8 +64,6 @@ const SearchOptions = () => {
     setSectorTwo("");
 
     dispatch({ type: "UPDATE_LOADING", payload: true });
-    dispatch({ type: "UPDATE_APIROUTE", payload: 'getDataWithText' });
-    dispatch({ type: "UPDATE_PAGE", payload: 1 });
 
     router.push(
       `/search/getDataWithText?page=${pageNumber}&sector=${sectorSearch}&country=${countrySearch}`

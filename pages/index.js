@@ -5,14 +5,16 @@ import { useDispatch, useSelector } from "react-redux";
 import { useRouter } from "next/router";
 
 const Home = ({ data }) => {
-
   const dispatch = useDispatch();
 
   dispatch({ type: "UPDATE_COUNTRIES", payload: data.countries });
   dispatch({ type: "UPDATE_LINKS", payload: data.data });
   dispatch({ type: "UPDATE_DATA", payload: data.data.data });
-  dispatch({ type: "UPDATE_APIROUTE", payload: 'index' });
   dispatch({ type: "UPDATE_LOADING", payload: false });
+
+  if (data.data.path == 'https://yes-here.online/api/index') {
+    dispatch({ type: "UPDATE_APIROUTE", payload: 'index' });
+  }
 
   const router = useRouter();
   const pageNumber = useSelector((state) => state.currentAuth.page);
