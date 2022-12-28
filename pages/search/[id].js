@@ -6,7 +6,6 @@ import { useDispatch } from "react-redux";
 import React, { memo, useEffect } from "react";
 
 const Search = ({ res, path, title }) => {
-
   const dispatch = useDispatch();
 
   useEffect(() => {

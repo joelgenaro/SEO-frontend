@@ -5,7 +5,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { useRouter } from "next/router";
 
 const Home = ({ data }) => {
-
   const dispatch = useDispatch();
   const router = useRouter();
   const pageNumber = useSelector((state) => state.currentAuth.page);
