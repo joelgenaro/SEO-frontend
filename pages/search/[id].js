@@ -3,20 +3,24 @@ import App from "../../components/App";
 import Head from 'next/head'
 import axios from "axios";
 import { useDispatch } from "react-redux";
+import React, { memo, useEffect } from "react";
 
 const Search = ({ res, path, title }) => {
+
   const dispatch = useDispatch();
 
-  dispatch({ type: "UPDATE_LINKS", payload: res.data });
-  dispatch({ type: "UPDATE_DATA", payload: res.data.data });
-  dispatch({ type: "UPDATE_LOADING", payload: false });
-  dispatch({ type: "UPDATE_TITLE", payload: title });
+  useEffect(() => {
+    dispatch({ type: "UPDATE_LINKS", payload: res.data });
+    dispatch({ type: "UPDATE_DATA", payload: res.data.data });
+    dispatch({ type: "UPDATE_LOADING", payload: false });
+    dispatch({ type: "UPDATE_TITLE", payload: title });
 
-  if (res.data.path == 'https://yes-here.online/api/getData') {
-    dispatch({ type: "UPDATE_APIROUTE", payload: 'getData' });
-  } else if (res.data.path == 'https://yes-here.online/api/getDataWithText') {
-    dispatch({ type: "UPDATE_APIROUTE", payload: 'getDataWithText' });
-  }
+    if (res.data.path == 'https://yes-here.online/api/getData') {
+      dispatch({ type: "UPDATE_APIROUTE", payload: 'getData' });
+    } else if (res.data.path == 'https://yes-here.online/api/getDataWithText') {
+      dispatch({ type: "UPDATE_APIROUTE", payload: 'getDataWithText' });
+    }
+  }, [res, path, title])
 
   return (
     <div className={styles.container}>
@@ -71,4 +75,4 @@ export async function getServerSideProps({ query }) {
   };
 }
 
-export default Search
+export default memo(Search)

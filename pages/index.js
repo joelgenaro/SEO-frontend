@@ -1,24 +1,26 @@
-import React, { useEffect } from "react";
+import React, { memo, useEffect } from "react";
 import styles from "../styles/Home.module.css";
 import App from "../components/App";
 import { useDispatch, useSelector } from "react-redux";
 import { useRouter } from "next/router";
 
 const Home = ({ data }) => {
+
   const dispatch = useDispatch();
-
-  dispatch({ type: "UPDATE_COUNTRIES", payload: data.countries });
-  dispatch({ type: "UPDATE_LINKS", payload: data.data });
-  dispatch({ type: "UPDATE_DATA", payload: data.data.data });
-  dispatch({ type: "UPDATE_LOADING", payload: false });
-
-  if (data.data.path == 'https://yes-here.online/api/index') {
-    dispatch({ type: "UPDATE_APIROUTE", payload: 'index' });
-  }
-
   const router = useRouter();
   const pageNumber = useSelector((state) => state.currentAuth.page);
   const apiRoute = useSelector((state) => state.currentAuth.apiRoute);
+
+  useEffect(() => {
+    dispatch({ type: "UPDATE_COUNTRIES", payload: data.countries });
+    dispatch({ type: "UPDATE_LINKS", payload: data.data });
+    dispatch({ type: "UPDATE_DATA", payload: data.data.data });
+    dispatch({ type: "UPDATE_LOADING", payload: false });
+
+    if (data.data.path == 'https://yes-here.online/api/index') {
+      dispatch({ type: "UPDATE_APIROUTE", payload: 'index' });
+    }
+  }, [data])
 
   useEffect(() => {
     if (apiRoute == 'index') {
@@ -56,4 +58,4 @@ export async function getServerSideProps({ query }) {
   return { props: { data } }
 }
 
-export default Home
+export default memo(Home)
