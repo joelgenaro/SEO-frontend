@@ -5,6 +5,8 @@ const initState = {
   sectorOne: null,
   sectorTwo: null,
   links: null,
+  title: null,
+  apiRoute: null,
   page: 1,
 };
 
@@ -12,6 +14,10 @@ const currentAuthReducer = (state = initState, action) => {
   switch (action.type) {
     case "UPDATE_LOADING":
       return { ...state, loading: action.payload };
+    case "UPDATE_APIROUTE":
+      return { ...state, apiRoute: action.payload };
+    case "UPDATE_TITLE":
+      return { ...state, title: action.payload };
     case "UPDATE_DATA":
       return { ...state, data: action.payload };
     case "UPDATE_COUNTRIES":

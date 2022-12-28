@@ -9,11 +9,13 @@ import { useRouter } from "next/router";
 const SearchOptions = () => {
   //Use for all the dispatch actions
   const dispatch = useDispatch();
+  const router = useRouter();
 
   const countries = useSelector((state) => state.currentAuth.countries);
   const pageNumber = useSelector((state) => state.currentAuth.page);
+  const h1Title = useSelector((state) => state.currentAuth.title);
+  const apiRoute = useSelector((state) => state.currentAuth.apiRoute);
 
-  const [optionFormData, setOptionFormData] = useState([]);
   const [city, setCity] = useState("");
   const [town, setTown] = useState("");
   const [locality, setLocality] = useState("");
@@ -21,13 +23,15 @@ const SearchOptions = () => {
   const [sectorTwo, setSectorTwo] = useState("");
   const [sectorSearch, setSectorSearch] = useState("");
   const [countrySearch, setCountrySearch] = useState("");
-  const [disableForMenu, setDisableForMenu] = useState(false);
-  const [disableForTxt, setDisableForTxt] = useState(false);
-  const router = useRouter();
 
   // get data when the pagination is changed
   useEffect(() => {
-    disableForMenu == false ? getDatawithCurrentOption() : getDataWithText();
+    if (apiRoute == 'getData') {
+      getDatawithCurrentOption()
+    }
+    if (apiRoute == 'getDataWithText') {
+      getDataWithText();
+    }
   }, [pageNumber]);
 
   // Search with Drop Down Menu
@@ -35,12 +39,11 @@ const SearchOptions = () => {
     let formData = $("#filterForm").serializeArray();
 
     dispatch({ type: "UPDATE_LOADING", payload: true });
+    dispatch({ type: "UPDATE_APIROUTE", payload: 'getData' });
+    dispatch({ type: "UPDATE_PAGE", payload: 1 });
 
     setSectorSearch("");
     setCountrySearch("");
-    setOptionFormData(formData);
-    setDisableForMenu(false);
-    setDisableForTxt(true);
 
     router.push(
       `/search/getData?page=${pageNumber}&country=${formData[0].value}&city=${formData[1].value}&town=${formData[2].value}&locality=${formData[3].value}&sectorOne=${formData[4].value}&sectorTwo=${formData[5].value}`
@@ -62,11 +65,10 @@ const SearchOptions = () => {
     setLocality("");
     setSectorOne("");
     setSectorTwo("");
-    setDisableForMenu(true);
-    setDisableForTxt(false);
-    setOptionFormData([]);
 
     dispatch({ type: "UPDATE_LOADING", payload: true });
+    dispatch({ type: "UPDATE_APIROUTE", payload: 'getDataWithText' });
+    dispatch({ type: "UPDATE_PAGE", payload: 1 });
 
     router.push(
       `/search/getDataWithText?page=${pageNumber}&sector=${sectorSearch}&country=${countrySearch}`
@@ -76,8 +78,6 @@ const SearchOptions = () => {
   // get childrens when changing parent option
   function handleChange(type, value) {
     let formData = $("#filterForm").serializeArray();
-
-    console.log('formData==========>', formData, 'type===================>', type, 'value==================>', value);
 
     switch (type) {
       case "country":
@@ -121,8 +121,6 @@ const SearchOptions = () => {
           `https://yes-here.online/api/getSearchOptions?type=${type}&country=${formData[0].value}&city=${formData[1].value}&town=${formData[2].value}&locality=${formData[3].value}&sectorOne=${formData[4].value}`
         )
         .then((res) => {
-          console.log('res=================>', res);
-
           switch (type) {
             case "country":
               setCity(res.data.main);
@@ -197,7 +195,6 @@ const SearchOptions = () => {
             </Col>{" "}
             <Col lg={2} md={6}>
               <li
-                disabled={disableForTxt}
                 onClick={() => getDataWithText()}
                 className="btn btn-info w-100"
               >
@@ -358,7 +355,6 @@ const SearchOptions = () => {
             <Col lg={2} md={6}>
               <label className="form-label">{"."} </label>
               <li
-                disabled={disableForMenu}
                 onClick={() => getDatawithCurrentOption()}
                 className="btn btn-primary w-100 filterBtn"
               >
@@ -368,16 +364,8 @@ const SearchOptions = () => {
           </Row>
         </Form>
         <div className="searchTitle">
-          <h2>
-            {disableForMenu
-              ? ((sectorSearch ? (sectorSearch) : '') + (countrySearch ? ("-" + countrySearch) : ''))
-              : (((optionFormData[0] ? (optionFormData[0].value) : '')) +
-                ((optionFormData[1] ? ("-" + optionFormData[1].value) : '')) +
-                ((optionFormData[2] ? ("-" + optionFormData[2].value) : '')) +
-                ((optionFormData[3] ? ("-" + optionFormData[3].value) : '')) +
-                ((optionFormData[4] ? ("-" + optionFormData[4].value) : '')) +
-                ((optionFormData[5] ? ("-" + optionFormData[5].value) : '')))}
-          </h2>
+          <h1>{h1Title}
+          </h1>
         </div>
       </div>
     </>

@@ -8,7 +8,7 @@ const PaginationWithProgrees = () => {
   const dispatch = useDispatch();
   const data = useSelector((state) => state.currentAuth.links);
 
-  const fetchData = async (pageNumber) => {
+  const fetchData = (pageNumber) => {
     dispatch({ type: "UPDATE_PAGE", payload: pageNumber });
   };
 
