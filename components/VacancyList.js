@@ -11,7 +11,6 @@ const JobVacancyList = () => {
   const [modal, setModal] = useState(false);
   const [companyID, setCompanyID] = useState(null);
   const [markers, setMarkers] = useState([]);
-
   // Set key
   Geocode.setApiKey("AIzaSyBbN-R50057ZpqFT3mh4MjRWfc60JupK1A");
 
@@ -19,28 +18,33 @@ const JobVacancyList = () => {
   const fetchData = (async (companies) => {
     const promises = companies.map(async (obj, key) => {
       if (obj["Company_Location_Geo"]) {
-        let coordinate = obj["Company_Location_Geo"].split(",");
+        const coordinate = obj["Company_Location_Geo"].split(",");
+        const type = 'mark'
 
-        let lat = Number(coordinate[0] ? coordinate[0].replace('"', "") : "");
-        let lng = Number(coordinate[1] ? coordinate[1].replace('"', "") : "");
+        const lat = Number(coordinate[0] ? coordinate[0].replace('"', "") : "");
+        const lng = Number(coordinate[1] ? coordinate[1].replace('"', "") : "");
 
-        return { id: key, position: { lat: lat, lng: lng } };
+        return { id: key, position: { lat: lat, lng: lng }, type: 'mark' };
 
       } else if (obj["Company_Location_Name"]) {
-        let city = obj["Company_Location_Name"]
+        const city = obj["Company_Location_Name"]
           ? obj["Company_Location_Name"].replaceAll('"', "")
           : "";
+        const type = 'circle';
+        const position = await geoLatcode(city, key, type)
 
-        return await geoLatcode(city, key);
+        return position;
+
       } else if (obj["location_country"]) {
         let city = obj["location_country"]
           ? obj["location_country"].replaceAll('"', "")
           : "";
+        const type = 'circle';
+        const position = await geoLatcode(city, key, type)
 
-        return await geoLatcode(city, key);
+        return position;
       }
     });
-
     let tempMarkers = await Promise.all(promises);
 
     tempMarkers = tempMarkers.filter(function (element) {
@@ -58,11 +62,11 @@ const JobVacancyList = () => {
   }, [data])
 
   // Get geocode according to city name
-  const geoLatcode = async (city, key) => {
+  const geoLatcode = async (city, key, type) => {
     const response = await Geocode.fromAddress(city);
     const { lat, lng } = response.results[0].geometry.location;
 
-    return { id: key, position: { lat: lat, lng: lng } };
+    return { id: key, position: { lat: lat, lng: lng }, type: type };
   }
 
   // Modal

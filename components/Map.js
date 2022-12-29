@@ -7,6 +7,7 @@ const containerStyle = {
 };
 
 const Map = ({ markers }) => {
+
   const { isLoaded } = useJsApiLoader({
     id: 'google-map-script',
     googleMapsApiKey: "AIzaSyBbN-R50057ZpqFT3mh4MjRWfc60JupK1A"
@@ -20,6 +21,9 @@ const Map = ({ markers }) => {
   };
 
   useEffect(() => {
+    markers.map(({ id, position, type }) => (
+      console.log(id, position, type)
+    ))
 
   }, [markers])
 
@@ -31,23 +35,25 @@ const Map = ({ markers }) => {
       zoom={2}
       ref={mapRef}
     >
-      {markers.map(({ id, position }) => (
-        <Marker key={id} position={position}></Marker>
-        // <Circle
-        //   key={id}
-        //   center={position}
-        //   radius={500000}
-        //   options={{
-        //     strokeColor: "#66009a",
-        //     strokeOpacity: 0.8,
-        //     strokeWeight: 2,
-        //     fillColor: `#66009a`,
-        //     fillOpacity: 0.35,
-        //     zIndex: 1
-        //   }}
-        // />
-      ))}
-    </GoogleMap>
+      {markers.map(({ id, position, type }) => {
+        if (type == 'mark')
+          return < Marker key={id} position={position} ></Marker>
+        return <Circle
+          key={id}
+          center={position}
+          radius={100000}
+          options={{
+            strokeColor: "#66009a",
+            strokeOpacity: 0.8,
+            strokeWeight: 2,
+            fillColor: `#66009a`,
+            fillOpacity: 0.35,
+            zIndex: 1
+          }}
+        />
+      })
+      }
+    </GoogleMap >
   ) : <></>
 }
 
